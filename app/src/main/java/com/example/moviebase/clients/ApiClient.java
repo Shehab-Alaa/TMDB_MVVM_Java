@@ -18,15 +18,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static final String BASE_URL = "https://api.themoviedb.org";
+    public static final String BASE_URL = "https://api.themoviedb.org";
     public static String API_KEY = "37e2f7d4b4302a4b13a350d54da32fd9";
     public static String LANGUAGE = "en-US";
     public static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185";
     public static final String BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w1280";
+
+    /*
     private Retrofit retrofit;
     private static ApiClient apiClient;
     public static Context context;
     private OkHttpClient okHttpClient;
+
 
     private ApiClient(){
 
@@ -96,6 +99,6 @@ public class ApiClient {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+    }*/
 
 }

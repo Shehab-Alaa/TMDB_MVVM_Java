@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="movieTrailer"
+            type="com.example.moviebase.models.MovieTrailer" />
+    </data>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="175dp"
+    android:layout_height="125dp"
+    android:layout_margin="5dp"
+    android:backgroundTint="@color/dRVBackground">
+
+    <ImageView
+        android:id="@+id/movie_trailer_thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:trailerImage="@{movieTrailer.key}"/>
+
+    <ProgressBar
+        android:id="@+id/movie_trailer_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"/>
+
+</androidx.cardview.widget.CardView>
+
+</layout>

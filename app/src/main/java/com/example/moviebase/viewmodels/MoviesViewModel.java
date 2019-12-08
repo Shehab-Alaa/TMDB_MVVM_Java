@@ -16,13 +16,14 @@ public class MoviesViewModel extends ViewModel {
     private DataRepository dataRepository;
     private MutableLiveData<ArrayList< Movie>> moviesList;;
 
-    public void getMoviesData(Context context, String category , int page){
+    public void init(){
         if (dataRepository == null){
             dataRepository = DataRepository.getInstance();
         }
-        moviesList = dataRepository.getMoviesList(context, category, page);
-        Log.i("Here" , "Iam From View Model Method");
+    }
 
+    public void getMoviesData(String category , int page){
+        moviesList = dataRepository.getMoviesList(category, page);
     }
 
     public MutableLiveData< ArrayList<Movie>> getMoviesList() {

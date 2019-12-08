@@ -1,11 +1,13 @@
-package com.example.moviebase.helpers;
+package com.example.moviebase.databinding;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.example.moviebase.R;
 import com.example.moviebase.caches.PicassoCache;
 import com.example.moviebase.clients.ApiClient;
+import com.example.moviebase.clients.YoutubeClient;
 import com.squareup.picasso.Callback;
 
 import androidx.databinding.BindingAdapter;
@@ -61,6 +63,23 @@ public class BinidingAdapters {
         movieRate.setStepSize(0.1f);
         movieRate.setRating(rating);
         movieRate.setIsIndicator(true);
+    }
+
+    @BindingAdapter({"android:trailerImage"})
+    public static void setMovieTrailerImage(ImageView movieTrailerThumbnail, String trailerKey){
+
+        PicassoCache
+                .getPicassoInstance(movieTrailerThumbnail.getContext())
+                .load(YoutubeClient.YOUTUBE_VIDEO_THUMBNAIL + trailerKey + "/0.jpg")
+                .into(movieTrailerThumbnail, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                    }
+                });
     }
 
 }

@@ -10,6 +10,7 @@ import com.example.moviebase.models.Movie;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,17 +22,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         this.movies = movies;
     }
 
+    @NonNull
     @Override
-    public MoviesAdapter.MoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemMovieBinding itemMovieBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()), R.layout.item_movie,parent ,false
         );
-        MoviesViewHolder moviesViewHolder = new MoviesViewHolder(itemMovieBinding);
-        return moviesViewHolder;
+        return new MoviesViewHolder(itemMovieBinding);
     }
 
     @Override
-    public void onBindViewHolder(MoviesAdapter.MoviesViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MoviesViewHolder holder, final int position) {
         holder.onBindMovie(movies.get(position));
     }
 
@@ -44,16 +45,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
         ItemMovieBinding itemMovieBinding;
 
-        public MoviesViewHolder(ItemMovieBinding itemMovieBinding) {
+        public MoviesViewHolder(@NonNull ItemMovieBinding itemMovieBinding) {
             super(itemMovieBinding.getRoot());
             this.itemMovieBinding = itemMovieBinding;
         }
 
         public void onBindMovie(Movie movie) {
-            itemMovieBinding.moviePosterLoading.setVisibility(View.VISIBLE);
             // set Data to variable to set each specific Item
             itemMovieBinding.setMovie(movie);
-            itemMovieBinding.moviePosterLoading.setVisibility(View.INVISIBLE);
         }
 
     }

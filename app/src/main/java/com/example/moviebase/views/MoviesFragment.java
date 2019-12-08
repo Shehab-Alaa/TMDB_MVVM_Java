@@ -52,6 +52,7 @@ public class MoviesFragment extends Fragment {
         category = getArguments().getString("category");
         // request API to get all movies in this Category
 
+        moviesViewModel.init();
         // specify view model of this Fragment
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
 
@@ -63,7 +64,7 @@ public class MoviesFragment extends Fragment {
 
         initMoviesRecyclerView(2 ,25);
 
-        getMoviesData(0);
+        getMoviesData(1);
 
         return view;
     }
@@ -85,7 +86,7 @@ public class MoviesFragment extends Fragment {
     }
 
     private void getMoviesData(int page){
-        moviesViewModel.getMoviesData(context,category,page);
+        moviesViewModel.getMoviesData(category,page);
         Log.i("Here" , "Category -> " + category);
         moviesViewModel.getMoviesList().observe(this , new Observer< ArrayList< Movie > >() {
             @Override
