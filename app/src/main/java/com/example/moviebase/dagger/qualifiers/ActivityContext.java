@@ -1,4 +1,4 @@
-package com.example.moviebase.databinding.qualifiers;
+package com.example.moviebase.dagger.qualifiers;
 
 
 import javax.inject.Qualifier;

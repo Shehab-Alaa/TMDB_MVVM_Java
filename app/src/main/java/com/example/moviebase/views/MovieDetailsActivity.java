@@ -1,6 +1,9 @@
 package com.example.moviebase.views;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
 import com.example.moviebase.adapters.MovieReviewsAdapter;
@@ -15,6 +18,7 @@ import com.example.moviebase.viewmodels.MovieDetailsViewModel;
 
 import java.util.ArrayList;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -39,10 +43,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private Movie movie;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_information);
+
 
         // Binding Class
         activityMovieInformationBinding = DataBindingUtil.setContentView(this ,R.layout.activity_movie_information);
@@ -51,77 +57,89 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
         activityMovieInformationBinding.setMovie(movie);
 
-      movieDetailsViewModel.init();
-      movieDetailsViewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
+        movieDetailsViewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
+        movieDetailsViewModel.init();
 
-      // request for more movie details
-      movieDetailsViewModel.getMovieDetailsData(movie.getId());
-      movieDetailsViewModel.getSimilarMoviesListData(movie.getId() , 1);
-      movieDetailsViewModel.getMovieTrailersListData(movie.getId());
-      movieDetailsViewModel.getMovieReviewsListData(movie.getId() , 1);
+        activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
 
+        // Animations Section
+        LayoutAnimationController rightAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_slide_right);
+        activityMovieInformationBinding.movieDetailsLayout.setLayoutAnimation(rightAnimationController);
 
-      // Movie Details Section
-      movieDetailsViewModel.getMovieDetails().observe(this, new Observer< MovieDetails >() {
-          @Override
-          public void onChanged(MovieDetails movieDetails) {
-              activityMovieInformationBinding.setMovieDetails(movieDetails);
-          }
-      });
-      ////
+        LayoutAnimationController bottomAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_from_bottom);
+        activityMovieInformationBinding.movieOverviewLayout.setLayoutAnimation(bottomAnimationController);
 
-      // Similar Movies Section
-      similarMoviesList = new ArrayList<>();
-      similarMoviesAdapter = new MoviesAdapter(similarMoviesList);
+        // Shard Element Movie Poster
+        activityMovieInformationBinding.moviePoster.setTransitionName(movie.getId().toString());
 
-      activityMovieInformationBinding.rvSimilarMovies.setLayoutManager(new LinearLayoutManager(this , RecyclerView.HORIZONTAL,false));
-      activityMovieInformationBinding.rvSimilarMovies.setHasFixedSize(true);
-      activityMovieInformationBinding.rvSimilarMovies.setAdapter(similarMoviesAdapter);
-
-      movieDetailsViewModel.getSimilarMoviesList().observe(this, new Observer< ArrayList< Movie > >() {
-          @Override
-          public void onChanged(ArrayList<Movie> movies) {
-              similarMoviesList.addAll(movies);
-              similarMoviesAdapter.notifyDataSetChanged();
-          }
-      });
-      /////
-
-      // Movie Reviews Section
-      movieReviewsList = new ArrayList<>();
-      movieReviewsAdapter = new MovieReviewsAdapter(movieReviewsList);
-
-      activityMovieInformationBinding.rvMovieReviews.setLayoutManager(new LinearLayoutManager(this));
-      activityMovieInformationBinding.rvMovieReviews.setHasFixedSize(true);
-      activityMovieInformationBinding.rvMovieReviews.setAdapter(movieReviewsAdapter);
-
-      movieDetailsViewModel.getMovieReviewsList().observe(this, new Observer< ArrayList< MovieReview > >() {
-          @Override
-          public void onChanged(ArrayList< MovieReview > movieReviews) {
-              movieReviewsList.addAll(movieReviews);
-              movieReviewsAdapter.notifyDataSetChanged();
-          }
-      });
-      ////
+        // request for more movie details
+        movieDetailsViewModel.getMovieDetailsData(movie.getId());
+        movieDetailsViewModel.getSimilarMoviesListData(movie.getId() , 1);
+        movieDetailsViewModel.getMovieTrailersListData(movie.getId());
+        movieDetailsViewModel.getMovieReviewsListData(movie.getId() , 1);
 
 
-      // Movie Trailers Section
-      movieTrailersList = new ArrayList<>();
-      movieTrailersAdapter = new MovieTrailersAdapter(movieTrailersList);
+        // Movie Details Section
+        movieDetailsViewModel.getMovieDetails().observe(this, new Observer< MovieDetails >() {
+            @Override
+            public void onChanged(MovieDetails movieDetails) {
+                activityMovieInformationBinding.setMovieDetails(movieDetails);
+            }
+        });
+        ////
 
-      activityMovieInformationBinding.rvMovieTrailers.setLayoutManager(new LinearLayoutManager(this , RecyclerView.HORIZONTAL ,false));
-      activityMovieInformationBinding.rvMovieTrailers.setHasFixedSize(true);
-      activityMovieInformationBinding.rvMovieTrailers.setAdapter(movieTrailersAdapter);
+        // Similar Movies Section
+        similarMoviesList = new ArrayList<>();
+        similarMoviesAdapter = new MoviesAdapter(similarMoviesList , movieDetailsViewModel);
+
+        activityMovieInformationBinding.rvSimilarMovies.setLayoutManager(new LinearLayoutManager(this , RecyclerView.HORIZONTAL,false));
+        activityMovieInformationBinding.rvSimilarMovies.setHasFixedSize(true);
+        activityMovieInformationBinding.rvSimilarMovies.setAdapter(similarMoviesAdapter);
+
+        movieDetailsViewModel.getSimilarMoviesList().observe(this, new Observer< ArrayList< Movie > >() {
+            @Override
+            public void onChanged(ArrayList<Movie> movies) {
+                similarMoviesList.addAll(movies);
+                similarMoviesAdapter.notifyDataSetChanged();
+            }
+        });
+        /////
+
+        // Movie Reviews Section
+        movieReviewsList = new ArrayList<>();
+        movieReviewsAdapter = new MovieReviewsAdapter(movieReviewsList);
+
+        activityMovieInformationBinding.rvMovieReviews.setLayoutManager(new LinearLayoutManager(this));
+        activityMovieInformationBinding.rvMovieReviews.setHasFixedSize(true);
+        activityMovieInformationBinding.rvMovieReviews.setAdapter(movieReviewsAdapter);
+
+        movieDetailsViewModel.getMovieReviewsList().observe(this, new Observer< ArrayList< MovieReview > >() {
+            @Override
+            public void onChanged(ArrayList< MovieReview > movieReviews) {
+                movieReviewsList.addAll(movieReviews);
+                movieReviewsAdapter.notifyDataSetChanged();
+            }
+        });
+        ////
 
 
-      movieDetailsViewModel.getMovieTrailersList().observe(this, new Observer< ArrayList< MovieTrailer > >() {
-          @Override
-          public void onChanged(ArrayList< MovieTrailer > movieTrailers) {
-              movieTrailersList.addAll(movieTrailers);
-              movieTrailersAdapter.notifyDataSetChanged();
-          }
-      });
-      ////
+        // Movie Trailers Section
+        movieTrailersList = new ArrayList<>();
+        movieTrailersAdapter = new MovieTrailersAdapter(movieTrailersList);
+
+        activityMovieInformationBinding.rvMovieTrailers.setLayoutManager(new LinearLayoutManager(this , RecyclerView.HORIZONTAL ,false));
+        activityMovieInformationBinding.rvMovieTrailers.setHasFixedSize(true);
+        activityMovieInformationBinding.rvMovieTrailers.setAdapter(movieTrailersAdapter);
+
+
+        movieDetailsViewModel.getMovieTrailersList().observe(this, new Observer< ArrayList< MovieTrailer > >() {
+            @Override
+            public void onChanged(ArrayList< MovieTrailer > movieTrailers) {
+                movieTrailersList.addAll(movieTrailers);
+                movieTrailersAdapter.notifyDataSetChanged();
+            }
+        });
+        ////
 
     }
 

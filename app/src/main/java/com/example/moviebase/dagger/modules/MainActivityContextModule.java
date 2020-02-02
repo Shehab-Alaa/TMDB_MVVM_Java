@@ -1,9 +1,9 @@
-package com.example.moviebase.databinding.modules;
+package com.example.moviebase.dagger.modules;
 
 import android.content.Context;
 
-import com.example.moviebase.databinding.qualifiers.ActivityContext;
-import com.example.moviebase.databinding.scopes.ActivityScope;
+import com.example.moviebase.dagger.qualifiers.ActivityContext;
+import com.example.moviebase.dagger.scopes.ActivityScope;
 import com.example.moviebase.views.MainActivity;
 
 import dagger.Module;

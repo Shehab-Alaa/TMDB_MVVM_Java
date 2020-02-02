@@ -7,6 +7,14 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity (tableName = "FavoriteMovies")
 public class Movie implements Serializable {
 
     @SerializedName("popularity")
@@ -18,6 +26,8 @@ public class Movie implements Serializable {
     @SerializedName("poster_path")
     private String posterPath;
     @SerializedName("id")
+    @PrimaryKey
+    @NonNull
     private Integer id;
     @SerializedName("adult")
     private Boolean adult;
@@ -28,6 +38,7 @@ public class Movie implements Serializable {
     @SerializedName("original_title")
     private String originalTitle;
     @SerializedName("genre_ids")
+    @Ignore
     private List<Integer> genreIds = null;
     @SerializedName("title")
     private String title;
@@ -37,6 +48,7 @@ public class Movie implements Serializable {
     private String overview;
     @SerializedName("release_date")
     private String releaseDate;
+
     private final static long serialVersionUID = 4413737257470429717L;
 
     public Double getPopularity() {

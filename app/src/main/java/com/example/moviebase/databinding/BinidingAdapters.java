@@ -1,14 +1,18 @@
 package com.example.moviebase.databinding;
 
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.moviebase.R;
 import com.example.moviebase.caches.PicassoCache;
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.YoutubeClient;
+import com.example.moviebase.models.Category;
 import com.squareup.picasso.Callback;
+
+import java.util.List;
 
 import androidx.databinding.BindingAdapter;
 
@@ -81,5 +85,48 @@ public class BinidingAdapters {
                     }
                 });
     }
+
+
+    @BindingAdapter({"android:categoriesText"})
+    public static void setCategoriesTextViewData(TextView movieCategories , List< Category > categories){
+        String categoriesHolder = "";
+        if (categories != null) {
+            for (Category category : categories)
+                categoriesHolder += category.getName() + ". ";
+        }
+        movieCategories.setText(categoriesHolder);
+    }
+
+    @BindingAdapter({"android:statusImage"})
+    public static void setMovieStatusImageView(ImageView movieStatusImage, String movieStatus){
+      if (movieStatus != null) {
+          if (movieStatus.equals("Released")) {
+              movieStatusImage.setImageDrawable(movieStatusImage.getResources().getDrawable(R.drawable.ic_released));
+          } else {
+              movieStatusImage.setImageDrawable(movieStatusImage.getResources().getDrawable(R.drawable.ic_un_released));
+          }
+      }
+    }
+
+    @BindingAdapter({"android:statusText"})
+    public static void setMovieStatusTextView(TextView movieStatusText,  String movieStatus){
+        if (movieStatus != null){
+        if (movieStatus.equals("Released")){
+            movieStatusText.setText(movieStatus);
+        }else{
+            movieStatusText.setText(movieStatus);
+        }
+
+        }
+    }
+
+    @BindingAdapter({"android:isAdultMovie"})
+    public static void setMovieAdultText(TextView adultMovieText , boolean isAdult){
+        if (isAdult)
+            adultMovieText.setText("Yes");
+        else
+            adultMovieText.setText("No");
+    }
+
 
 }

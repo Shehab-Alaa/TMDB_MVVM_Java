@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.moviebase.R;
-import com.example.moviebase.databinding.MyApplication;
-import com.example.moviebase.databinding.components.ApplicationComponent;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

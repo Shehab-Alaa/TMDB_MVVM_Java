@@ -6,7 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
 import com.example.moviebase.adapters.MoviesAdapter;
@@ -26,14 +27,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 public class MoviesFragment extends Fragment {
 
-
     private Context context;
     private MoviesViewModel moviesViewModel;
     private String category;
     private MoviesAdapter moviesAdapter;
     private FragmentMoviesBinding moviesBinding;
     private ArrayList<Movie> moviesList;
-
 
     @Override
     public void onAttach(Context context) {
@@ -52,12 +51,12 @@ public class MoviesFragment extends Fragment {
         category = getArguments().getString("category");
         // request API to get all movies in this Category
 
-        moviesViewModel.init();
         // specify view model of this Fragment
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
+        moviesViewModel.init();
 
         moviesList = new ArrayList<>();
-        moviesAdapter = new MoviesAdapter(moviesList);
+        moviesAdapter = new MoviesAdapter(moviesList , moviesViewModel);
 
         moviesBinding.setLifecycleOwner(this);
         moviesBinding.progressBar.setVisibility(View.VISIBLE);
@@ -76,9 +75,9 @@ public class MoviesFragment extends Fragment {
         moviesBinding.moviesRv.setLayoutManager(gridLayoutManager);
         moviesBinding.moviesRv.setHasFixedSize(true);
         // set Animation to all children (items) of this Layout
-        /*int animID = R.anim.layout_animation_fall_down;
+        int animID = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(context, animID);
-        moviesBinding.moviesRv.setLayoutAnimation(animation);*/
+        moviesBinding.moviesRv.setLayoutAnimation(animation);
         // equal spaces between grid items
         boolean includeEdge = true;
         moviesBinding.moviesRv.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
@@ -87,12 +86,10 @@ public class MoviesFragment extends Fragment {
 
     private void getMoviesData(int page){
         moviesViewModel.getMoviesData(category,page);
-        Log.i("Here" , "Category -> " + category);
         moviesViewModel.getMoviesList().observe(this , new Observer< ArrayList< Movie > >() {
             @Override
             public void onChanged(ArrayList<Movie> movies) {
                 if (movies != null){
-                  Log.i("Here" , "Iam Changed");
                   moviesBinding.progressBar.setVisibility(View.INVISIBLE);
                   moviesList.addAll(movies);
                   moviesAdapter.notifyDataSetChanged();

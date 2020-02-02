@@ -1,11 +1,11 @@
 package com.example.moviebase.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ItemMovieBinding;
+import com.example.moviebase.databinding.eventhandlers.OnMovieItemClick;
 import com.example.moviebase.models.Movie;
 
 import java.util.ArrayList;
@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
     private ArrayList<Movie> movies;
+    private OnMovieItemClick onMovieItemClick;
 
-    public MoviesAdapter(ArrayList<Movie> movies){
+    public MoviesAdapter(ArrayList<Movie> movies , OnMovieItemClick onMovieItemClick){
         this.movies = movies;
+        this.onMovieItemClick = onMovieItemClick;
     }
 
     @NonNull
@@ -48,6 +50,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         public MoviesViewHolder(@NonNull ItemMovieBinding itemMovieBinding) {
             super(itemMovieBinding.getRoot());
             this.itemMovieBinding = itemMovieBinding;
+            this.itemMovieBinding.setEventHandler(onMovieItemClick);
         }
 
         public void onBindMovie(Movie movie) {

@@ -1,10 +1,10 @@
-package com.example.moviebase.databinding.modules;
+package com.example.moviebase.dagger.modules;
 
 
 import android.content.Context;
 
-import com.example.moviebase.databinding.qualifiers.ApplicationContextQualifier;
-import com.example.moviebase.databinding.scopes.ApplicationScope;
+import com.example.moviebase.dagger.qualifiers.ApplicationContextQualifier;
+import com.example.moviebase.dagger.scopes.ApplicationScope;
 
 import dagger.Module;
 import dagger.Provides;

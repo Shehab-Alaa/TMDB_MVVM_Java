@@ -316,38 +316,4 @@ public class MovieDetails implements Serializable {
         this.voteCount = voteCount;
     }
 
-
-    @BindingAdapter({"android:categoriesText"})
-    public static void setCategoriesTextViewData(TextView movieCategories , List<Category> categories){
-        String categoriesHolder = "";
-        for (Category category : categories)
-            categoriesHolder += category.getName() + ". ";
-        movieCategories.setText(categoriesHolder);
-    }
-
-    @BindingAdapter({"android:statusImage"})
-    public static void setMovieStatusImageView(ImageView movieStatusImage, String movieStatus){
-        if (movieStatus.equals("Released")){
-            movieStatusImage.setImageDrawable(movieStatusImage.getResources().getDrawable(R.drawable.ic_released));
-        }else{
-            movieStatusImage.setImageDrawable(movieStatusImage.getResources().getDrawable(R.drawable.ic_un_released));
-        }
-    }
-
-    @BindingAdapter({"android:statusText"})
-    public static void setMovieStatusTextView(TextView movieStatusText,  String movieStatus){
-        if (movieStatus.equals("Released")){
-            movieStatusText.setText(movieStatus);
-        }else{
-            movieStatusText.setText(movieStatus);
-        }
-    }
-
-    @BindingAdapter({"android:isAdultMovie"})
-    public static void setMovieAdultText(TextView adultMovieText , boolean isAdult){
-        if (isAdult)
-            adultMovieText.setText("Yes");
-        else
-            adultMovieText.setText("No");
-    }
 }

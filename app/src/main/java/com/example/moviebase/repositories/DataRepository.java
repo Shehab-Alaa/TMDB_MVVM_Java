@@ -1,15 +1,10 @@
 package com.example.moviebase.repositories;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.ApiService;
-import com.example.moviebase.databinding.MyApplication;
-import com.example.moviebase.databinding.components.ApplicationComponent;
-import com.example.moviebase.databinding.components.DaggerApplicationComponent;
-import com.example.moviebase.databinding.qualifiers.ApplicationContextQualifier;
+import com.example.moviebase.dagger.MyApplication;
 import com.example.moviebase.models.DataResponse;
 import com.example.moviebase.models.Movie;
 import com.example.moviebase.models.MovieDetails;
@@ -17,7 +12,6 @@ import com.example.moviebase.models.MovieReview;
 import com.example.moviebase.models.MovieReviewResponse;
 import com.example.moviebase.models.MovieTrailer;
 import com.example.moviebase.models.MovieVideosResponse;
-import com.example.moviebase.views.MainActivity;
 
 
 import java.util.ArrayList;

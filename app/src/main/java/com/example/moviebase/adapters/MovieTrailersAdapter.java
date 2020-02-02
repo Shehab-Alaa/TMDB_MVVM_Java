@@ -1,12 +1,9 @@
 package com.example.moviebase.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviebase.R;
-import com.example.moviebase.databinding.ItemMovieReviewBinding;
 import com.example.moviebase.databinding.ItemMovieTrailerBinding;
 import com.example.moviebase.models.MovieTrailer;
 

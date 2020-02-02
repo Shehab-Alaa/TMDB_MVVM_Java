@@ -1,4 +1,4 @@
-package com.example.moviebase.databinding.scopes;
+package com.example.moviebase.dagger.scopes;
 
 
 import java.lang.annotation.Retention;

@@ -7,6 +7,9 @@
         <variable
             name="movie"
             type="com.example.moviebase.models.Movie" />
+        <variable
+            name="eventHandler"
+            type="com.example.moviebase.databinding.eventhandlers.OnMovieItemClick" />
     </data>
 
 <androidx.cardview.widget.CardView
@@ -15,7 +18,8 @@
     android:layout_height="300dp"
     app:cardCornerRadius="5dp"
     android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp">
+    android:layout_marginRight="2dp"
+    android:onClick="@{(view)->eventHandler.onMovieItemClick(view , movie)}">
 
     <FrameLayout
         android:layout_width="match_parent"

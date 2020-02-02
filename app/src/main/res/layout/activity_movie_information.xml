@@ -11,6 +11,9 @@
         <variable
             name="movieDetails"
             type="com.example.moviebase.models.MovieDetails" />
+        <variable
+            name="eventHandler"
+            type="com.example.moviebase.databinding.eventhandlers.OnFavoriteBtnClick" />
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -72,7 +75,8 @@
         android:src="@drawable/ic_un_favorite"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        android:onClick="@{(view)->eventHandler.onFavoriteBtnClick(view,movie)}"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested"
@@ -150,8 +154,8 @@
 
                         <ImageView
                             android:id="@+id/movie_status_image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="bottom"
                             android:statusImage="@{movieDetails.status}" />
 
@@ -199,18 +203,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="8dp"
-                android:text="movie overview"
+                android:text="@{movieDetails.overview}"
                 android:textColor="@color/dText"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/expand_collapse_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:text="EXPAND"
-                android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
 
@@ -237,7 +231,7 @@
                          android:id="@+id/movie_run_time"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:text="@{movieDetails.runtime}"
+                         android:text="@{movieDetails.runtime + `m`}"
                          android:textColor="@color/dText"
                          android:layout_marginTop="5dp"
                          android:layout_gravity="center"/>
@@ -260,7 +254,7 @@
                          android:id="@+id/movie_budget"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:text="@{movieDetails.budget}"
+                         android:text="@{movieDetails.budget + `S`}"
                          android:textColor="@color/dText"
                          android:layout_marginTop="5dp"
                          android:layout_gravity="center"/>
