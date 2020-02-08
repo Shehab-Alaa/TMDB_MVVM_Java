@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 public class MoviesFragment extends Fragment {
@@ -52,8 +52,7 @@ public class MoviesFragment extends Fragment {
         // request API to get all movies in this Category
 
         // specify view model of this Fragment
-        moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
-        moviesViewModel.init();
+        moviesViewModel = new ViewModelProvider(this).get(MoviesViewModel.class);
 
         moviesList = new ArrayList<>();
         moviesAdapter = new MoviesAdapter(moviesList , moviesViewModel);
@@ -86,7 +85,7 @@ public class MoviesFragment extends Fragment {
 
     private void getMoviesData(int page){
         moviesViewModel.getMoviesData(category,page);
-        moviesViewModel.getMoviesList().observe(this , new Observer< ArrayList< Movie > >() {
+        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , new Observer< ArrayList< Movie > >() {
             @Override
             public void onChanged(ArrayList<Movie> movies) {
                 if (movies != null){

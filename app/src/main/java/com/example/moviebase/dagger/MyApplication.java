@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.example.moviebase.dagger.component.ApplicationComponent;
 import com.example.moviebase.dagger.component.DaggerApplicationComponent;
-import com.example.moviebase.dagger.modules.ApplicationContextModule;
+
 
 public class MyApplication extends Application {
 
@@ -14,14 +14,12 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        applicationComponent = DaggerApplicationComponent
-                .builder()
-                .applicationContextModule(new ApplicationContextModule(this))
-                .build();
+        applicationComponent = DaggerApplicationComponent.create();
+
     }
 
-    public static ApplicationComponent getApplicationComponent() {
+
+    public static ApplicationComponent getApplicationComponent(){
         return applicationComponent;
     }
-
 }

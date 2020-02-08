@@ -1,6 +1,5 @@
 package com.example.moviebase.databinding;
 
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import androidx.databinding.BindingAdapter;
 
-public class BinidingAdapters {
+public class BindingAdapters {
 
     @BindingAdapter({"android:backPosterUrl"})
     public static void loadBackPosterImage(final ImageView backPoster, String backPosterUrl){

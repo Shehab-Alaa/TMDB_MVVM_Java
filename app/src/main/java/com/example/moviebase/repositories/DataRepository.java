@@ -1,5 +1,6 @@
 package com.example.moviebase.repositories;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.example.moviebase.clients.ApiClient;
@@ -25,53 +26,47 @@ import retrofit2.Response;
 
 public class DataRepository {
 
-    private static DataRepository dataRepository;
     private MutableLiveData<ArrayList<Movie>> moviesList;
     private MutableLiveData<MovieDetails> movieDetails;
     private MutableLiveData<ArrayList<Movie>> similarMoviesList;
     private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
     private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
-
+    private ApiService apiService;
 
     @Inject
-    ApiService apiService;
-
-    public static DataRepository getInstance(){
-        if (dataRepository == null){
-            dataRepository = new DataRepository();
-            MyApplication.getApplicationComponent().injectRepository(dataRepository);
-        }
-        return dataRepository;
+    public void dataRepository(ApiService apiService){
+        this.apiService = apiService;
     }
 
     public MutableLiveData<ArrayList<Movie>> getMoviesList(String category , int page){
 
         moviesList = new MutableLiveData<>();
 
+
         final Call< DataResponse > moviesCall = apiService
                 .getMovies(
-                        category ,
-                        ApiClient.API_KEY ,
+                        category,
+                        ApiClient.API_KEY,
 
-                        ApiClient.LANGUAGE ,
+                        ApiClient.LANGUAGE,
                         page);
 
-        moviesCall.enqueue(new Callback<DataResponse>() {
+        moviesCall.enqueue(new Callback< DataResponse >() {
             @Override
-            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+            public void onResponse(Call< DataResponse > call, Response< DataResponse > response) {
                 // when data is ready the data will be posted and who is observe will update UI
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     moviesList.postValue((ArrayList< Movie >) response.body().getMovies());
-                }else{
+                } else {
                     moviesList.postValue(null);
                 }
             }
 
             @Override
-            public void onFailure(Call<DataResponse> call, Throwable t) {
+            public void onFailure(Call< DataResponse > call, Throwable t) {
                 moviesList.postValue(null);
-                Log.e("API Service Presenter >"  , " error in getting data from API");
-                Log.e("error message > " , t.getMessage());
+                Log.e("API Service Presenter >", " error in getting data from API");
+                Log.e("error message > ", t.getMessage());
             }
         });
 

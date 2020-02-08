@@ -1,17 +1,16 @@
 package com.example.moviebase.dagger.modules;
 
-
-
+import android.app.Application;
 import android.content.Context;
 
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.ApiService;
 import com.example.moviebase.dagger.qualifiers.ApplicationContextQualifier;
-import com.example.moviebase.dagger.scopes.ApplicationScope;
 import com.example.moviebase.helpers.NetworkUtils;
 
-
 import java.io.IOException;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,16 +23,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module (includes = {ApplicationContextModule.class})
-public class RetrofitModule {
+public class AppModule {
 
     @Provides
-    @ApplicationScope
+    @Singleton
     static ApiService getApiClient(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 
     @Provides
-    @ApplicationScope
+    @Singleton
     static Retrofit getRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(ApiClient.BASE_URL)
@@ -43,14 +42,14 @@ public class RetrofitModule {
     }
 
     @Provides
-    @ApplicationScope
+    @Singleton
     static Cache getCache(@ApplicationContextQualifier Context context) {
         int cacheSize = 10 * 1024 * 1024;
         return new Cache(context.getCacheDir(), cacheSize);
     }
 
     @Provides
-    @ApplicationScope
+    @Singleton
     static OkHttpClient getOkHttpClient(Interceptor interceptor, Cache cache) {
         return new OkHttpClient.Builder()
                 .cache(cache)
@@ -60,7 +59,7 @@ public class RetrofitModule {
     }
 
     @Provides
-    @ApplicationScope
+    @Singleton
     static Interceptor getInterceptor(@ApplicationContextQualifier final Context context) {
         Interceptor interceptor = new Interceptor() {
             @Override
@@ -78,12 +77,10 @@ public class RetrofitModule {
                             .header("Cache-Control", "public, max-age = " + maxAge)
                             .build();
                 }
-                 return chain.proceed(request);
+                return chain.proceed(request);
             }
         };
         return interceptor;
     }
 
-
 }
-

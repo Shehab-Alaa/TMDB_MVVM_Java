@@ -1,6 +1,5 @@
 package com.example.moviebase.dagger.scopes;
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

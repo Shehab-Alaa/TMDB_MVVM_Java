@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:background="@color/dBackground"
-            android:moviePosterUrl="@{movie.posterPath}"/>
+            android:moviePosterUrl="@{movie.getPosterPath()}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

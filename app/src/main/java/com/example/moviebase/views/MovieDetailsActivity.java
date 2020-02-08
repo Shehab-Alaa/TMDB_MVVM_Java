@@ -22,7 +22,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,8 +57,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
         activityMovieInformationBinding.setMovie(movie);
 
-        movieDetailsViewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel.class);
-        movieDetailsViewModel.init();
+        movieDetailsViewModel = new ViewModelProvider(this).get(MovieDetailsViewModel.class);
 
         activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
 

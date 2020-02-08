@@ -20,6 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
@@ -34,10 +36,10 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
     private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
     private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
 
-    public void init(){
-        if (dataRepository == null){
-            dataRepository = DataRepository.getInstance();
-        }
+
+    @Inject
+    public MovieDetailsViewModel(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
     }
 
     public void getMovieDetailsData(int movieID) {

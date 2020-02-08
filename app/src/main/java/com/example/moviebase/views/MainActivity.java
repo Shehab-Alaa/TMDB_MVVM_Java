@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.moviebase.R;
+import com.example.moviebase.dagger.MyApplication;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , R.string.navigation_drawer_open , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        MyApplication.getApplicationComponent().inject(this);
+
 
         if (savedInstanceState == null)
         {
@@ -81,14 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle("Favorite Movies");
                 openMoviesFragment(FAVORITE);
                 break;
-            /*case R.id.aboutItem:
-                toolbar.setTitle("About");
-                openOtherFragments("about");
-                break;
-            case R.id.settingsItem:
-                toolbar.setTitle("Settings");
-                openOtherFragments("settings");
-                break;*/
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -107,18 +104,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 moviesFragment).commit();
     }
 
-
-    /*
-    public void openOtherFragments(String key)
-    {
-        if (key.equals("about")){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container ,
-                    new AboutFragment()).commit();
-        }
-        else if (key.equals("settings")){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container ,
-                    new SettingsFragment()).commit();
-        }
-    }*/
 }
 
