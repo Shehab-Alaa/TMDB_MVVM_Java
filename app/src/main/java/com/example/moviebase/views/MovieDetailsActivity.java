@@ -9,6 +9,7 @@ import com.example.moviebase.R;
 import com.example.moviebase.adapters.MovieReviewsAdapter;
 import com.example.moviebase.adapters.MovieTrailersAdapter;
 import com.example.moviebase.adapters.MoviesAdapter;
+import com.example.moviebase.dagger.MyApplication;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.models.Movie;
 import com.example.moviebase.models.MovieDetails;
@@ -18,15 +19,17 @@ import com.example.moviebase.viewmodels.MovieDetailsViewModel;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends DaggerAppCompatActivity {
 
     private MovieDetailsViewModel movieDetailsViewModel;
 
@@ -38,10 +41,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private MovieTrailersAdapter movieTrailersAdapter;
     private ArrayList<MovieTrailer> movieTrailersList;
-
     private ActivityMovieInformationBinding activityMovieInformationBinding;
     private Movie movie;
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -57,7 +61,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
         activityMovieInformationBinding.setMovie(movie);
 
-        movieDetailsViewModel = new ViewModelProvider(this).get(MovieDetailsViewModel.class);
+        //MyApplication.getApplicationComponent().inject(this);
+
+        movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
 
         activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
 

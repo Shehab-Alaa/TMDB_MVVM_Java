@@ -4,17 +4,33 @@ package com.example.moviebase.dagger.component;
 import android.app.Application;
 
 import com.example.moviebase.dagger.MyApplication;
+import com.example.moviebase.dagger.builders.ActivitiesBuilderModule;
 import com.example.moviebase.dagger.modules.AppModule;
-import com.example.moviebase.dagger.modules.ApplicationContextModule;
-import com.example.moviebase.repositories.DataRepository;
-import com.example.moviebase.views.MainActivity;
+import com.example.moviebase.dagger.builders.FragmentsBuilderModule;
+import com.example.moviebase.dagger.modules.ViewModelFactoryModule;
+
 
 import javax.inject.Singleton;
+
+import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
-@Component (modules = {ApplicationContextModule.class , AppModule.class})
-public interface ApplicationComponent {
-    //void injectRepository(DataRepository dataRepository);
-    void inject(MainActivity mainActivity);
+@Component (modules = {
+          AndroidSupportInjectionModule.class
+        , AppModule.class
+        , ViewModelFactoryModule.class
+        , ActivitiesBuilderModule.class
+        , FragmentsBuilderModule.class})
+public interface ApplicationComponent extends AndroidInjector<MyApplication> {
+
+    @Component.Builder
+    interface Builder{
+
+        @BindsInstance
+        Builder application(Application application);
+        ApplicationComponent build();
+    }
 }

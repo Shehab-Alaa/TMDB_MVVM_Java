@@ -11,6 +11,8 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
 import com.example.moviebase.adapters.MoviesAdapter;
+import com.example.moviebase.dagger.MyApplication;
+import com.example.moviebase.dagger.component.ApplicationComponent;
 import com.example.moviebase.databinding.FragmentMoviesBinding;
 import com.example.moviebase.helpers.GridSpacingItemDecoration;
 import com.example.moviebase.models.Movie;
@@ -18,14 +20,18 @@ import com.example.moviebase.viewmodels.MoviesViewModel;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import dagger.android.support.DaggerFragment;
 
-public class MoviesFragment extends Fragment {
+public class MoviesFragment extends DaggerFragment {
 
     private Context context;
     private MoviesViewModel moviesViewModel;
@@ -33,6 +39,9 @@ public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
     private FragmentMoviesBinding moviesBinding;
     private ArrayList<Movie> moviesList;
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Override
     public void onAttach(Context context) {
@@ -52,7 +61,7 @@ public class MoviesFragment extends Fragment {
         // request API to get all movies in this Category
 
         // specify view model of this Fragment
-        moviesViewModel = new ViewModelProvider(this).get(MoviesViewModel.class);
+        moviesViewModel = new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
 
         moviesList = new ArrayList<>();
         moviesAdapter = new MoviesAdapter(moviesList , moviesViewModel);

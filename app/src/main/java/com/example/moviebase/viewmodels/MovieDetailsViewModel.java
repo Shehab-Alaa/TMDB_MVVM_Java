@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.moviebase.R;
-import com.example.moviebase.databinding.eventhandlers.OnExpandCollapseBtnClick;
 import com.example.moviebase.databinding.eventhandlers.OnFavoriteBtnClick;
 import com.example.moviebase.databinding.eventhandlers.OnMovieItemClick;
 import com.example.moviebase.models.Movie;
@@ -16,7 +15,6 @@ import com.example.moviebase.models.MovieReview;
 import com.example.moviebase.models.MovieTrailer;
 import com.example.moviebase.repositories.DataRepository;
 import com.example.moviebase.views.MovieDetailsActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 

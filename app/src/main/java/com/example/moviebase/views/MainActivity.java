@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.moviebase.R;
-import com.example.moviebase.dagger.MyApplication;
 import com.google.android.material.navigation.NavigationView;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final String UPCOMING = "upcoming";
     private final String FAVORITE = "favorite";
     private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , R.string.navigation_drawer_open , R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-
-        MyApplication.getApplicationComponent().inject(this);
 
 
         if (savedInstanceState == null)

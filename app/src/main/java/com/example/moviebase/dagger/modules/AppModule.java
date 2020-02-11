@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.ApiService;
-import com.example.moviebase.dagger.qualifiers.ApplicationContextQualifier;
 import com.example.moviebase.helpers.NetworkUtils;
 
 import java.io.IOException;
@@ -22,18 +21,18 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module (includes = {ApplicationContextModule.class})
+@Module
 public class AppModule {
 
     @Provides
     @Singleton
-    static ApiService getApiClient(Retrofit retrofit) {
+    static ApiService provideApiClient(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 
     @Provides
     @Singleton
-    static Retrofit getRetrofit(OkHttpClient okHttpClient) {
+    static Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(ApiClient.BASE_URL)
                 .client(okHttpClient)
@@ -43,14 +42,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static Cache getCache(@ApplicationContextQualifier Context context) {
+    static Cache provideCache(Context context) {
         int cacheSize = 10 * 1024 * 1024;
         return new Cache(context.getCacheDir(), cacheSize);
     }
 
     @Provides
     @Singleton
-    static OkHttpClient getOkHttpClient(Interceptor interceptor, Cache cache) {
+    static OkHttpClient provideOkHttpClient(Interceptor interceptor, Cache cache) {
         return new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(interceptor)
@@ -60,7 +59,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static Interceptor getInterceptor(@ApplicationContextQualifier final Context context) {
+    static Interceptor provideInterceptor(final Context context) {
         Interceptor interceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -83,4 +82,9 @@ public class AppModule {
         return interceptor;
     }
 
+    @Provides
+    @Singleton
+    static Context provideApplicationContext(Application application){
+        return application;
+    }
 }

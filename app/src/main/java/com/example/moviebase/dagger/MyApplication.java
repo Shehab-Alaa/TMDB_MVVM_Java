@@ -1,25 +1,13 @@
 package com.example.moviebase.dagger;
 
-import android.app.Application;
 
-import com.example.moviebase.dagger.component.ApplicationComponent;
-import com.example.moviebase.dagger.component.DaggerApplicationComponent;
+import dagger.android.AndroidInjector;
+import dagger.android.support.DaggerApplication;
 
-
-public class MyApplication extends Application {
-
-    static ApplicationComponent applicationComponent;
+public class MyApplication extends DaggerApplication {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-        applicationComponent = DaggerApplicationComponent.create();
-
-    }
-
-
-    public static ApplicationComponent getApplicationComponent(){
-        return applicationComponent;
+    protected AndroidInjector< ? extends DaggerApplication > applicationInjector() {
+        return null;
     }
 }
