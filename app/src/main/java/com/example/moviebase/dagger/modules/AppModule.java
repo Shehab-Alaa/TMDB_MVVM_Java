@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.ApiService;
-import com.example.moviebase.helpers.NetworkUtils;
+import com.example.moviebase.utils.NetworkUtils;
 
 import java.io.IOException;
 
@@ -19,6 +19,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -36,6 +37,7 @@ public class AppModule {
         return new Retrofit.Builder()
                 .baseUrl(ApiClient.BASE_URL)
                 .client(okHttpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

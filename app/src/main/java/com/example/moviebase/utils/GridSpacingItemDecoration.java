@@ -1,4 +1,4 @@
-package com.example.moviebase.helpers;
+package com.example.moviebase.utils;
 
 import android.graphics.Rect;
 import android.view.View;

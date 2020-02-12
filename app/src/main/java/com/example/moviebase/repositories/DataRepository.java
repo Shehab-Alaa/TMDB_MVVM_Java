@@ -1,11 +1,9 @@
 package com.example.moviebase.repositories;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.example.moviebase.clients.ApiClient;
 import com.example.moviebase.clients.ApiService;
-import com.example.moviebase.dagger.MyApplication;
 import com.example.moviebase.models.DataResponse;
 import com.example.moviebase.models.Movie;
 import com.example.moviebase.models.MovieDetails;
@@ -20,19 +18,12 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import androidx.lifecycle.MutableLiveData;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Single;
+
 
 @Singleton
 public class DataRepository {
 
-    private MutableLiveData<ArrayList<Movie>> moviesList;
-    private MutableLiveData<MovieDetails> movieDetails;
-    private MutableLiveData<ArrayList<Movie>> similarMoviesList;
-    private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
-    private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
     private ApiService apiService;
 
     @Inject
@@ -40,154 +31,42 @@ public class DataRepository {
         this.apiService = apiService;
     }
 
-    public MutableLiveData<ArrayList<Movie>> getMoviesList(String category , int page){
-
-        moviesList = new MutableLiveData<>();
-
-
-        final Call< DataResponse > moviesCall = apiService
-                .getMovies(
+    public Single<DataResponse> getMoviesList(String category , int page){
+        return apiService.getMovies(
                         category,
                         ApiClient.API_KEY,
-
                         ApiClient.LANGUAGE,
                         page);
-
-        moviesCall.enqueue(new Callback< DataResponse >() {
-            @Override
-            public void onResponse(Call< DataResponse > call, Response< DataResponse > response) {
-                // when data is ready the data will be posted and who is observe will update UI
-                if (response.isSuccessful()) {
-                    moviesList.postValue((ArrayList< Movie >) response.body().getMovies());
-                } else {
-                    moviesList.postValue(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call< DataResponse > call, Throwable t) {
-                moviesList.postValue(null);
-                Log.e("API Service Presenter >", " error in getting data from API");
-                Log.e("error message > ", t.getMessage());
-            }
-        });
-
-        return moviesList;
     }
 
-    public MutableLiveData<MovieDetails> getMovieDetailsData(int movieID){
-
-        movieDetails = new MutableLiveData<>();
-
-            final Call<MovieDetails> movieDetailsCall = apiService
-                           .getMovieDetails(
+    public Single<MovieDetails> getMovieDetailsData(int movieID){
+       return apiService.getMovieDetails(
                             movieID ,
                             ApiClient.API_KEY ,
-                            ApiClient.LANGUAGE
-                    );
-            movieDetailsCall.enqueue(new Callback<MovieDetails>() {
-                @Override
-                public void onResponse(Call<MovieDetails> call, Response<MovieDetails> response) {
-                    if (response.isSuccessful())
-                        movieDetails.postValue(response.body());
-                    else
-                        movieDetails.postValue(null);
-                }
-
-                @Override
-                public void onFailure(Call<MovieDetails> call, Throwable t) {
-                    Log.e("API Service Presenter >"  , " error in getting data from API");
-                    Log.e("error message > " , t.getMessage());
-                }
-            });
-        return movieDetails;
+                            ApiClient.LANGUAGE);
      }
 
-    public MutableLiveData<ArrayList<Movie>> getSimilarMoviesListData(int movieID , int page){
-        similarMoviesList = new MutableLiveData<>();
-
-        final Call<DataResponse> moviesCall = apiService
-                        .getSimilarMovies(
+    public Single<DataResponse> getSimilarMoviesListData(int movieID , int page){
+        return apiService.getSimilarMovies(
                         movieID ,
                         ApiClient.API_KEY ,
                         ApiClient.LANGUAGE ,
                         page);
-
-        moviesCall.enqueue(new Callback<DataResponse>() {
-            @Override
-            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
-                if (response.isSuccessful())
-                    similarMoviesList.postValue((ArrayList<Movie>) response.body().getMovies());
-                else
-                    similarMoviesList.postValue(null);
-            }
-
-            @Override
-            public void onFailure(Call<DataResponse> call, Throwable t) {
-                Log.e("API Service Presenter >"  , " error in getting data from API");
-                Log.e("error message > " , t.getMessage());
-            }
-        });
-
-        return similarMoviesList;
     }
 
-    public MutableLiveData<ArrayList<MovieReview>> getMovieReviewsListData(int movieID,int page){
-
-        movieReviewsList = new MutableLiveData<>();
-
-        final Call<MovieReviewResponse> movieReviewResponseCall = apiService
-                        .getMovieReviews(
+    public Single<MovieReviewResponse> getMovieReviewsListData(int movieID,int page){
+        return apiService.getMovieReviews(
                         movieID ,
                         ApiClient.API_KEY ,
                         ApiClient.LANGUAGE ,
                         page);
-
-        movieReviewResponseCall.enqueue(new Callback< MovieReviewResponse >() {
-            @Override
-            public void onResponse(Call<MovieReviewResponse> call, Response<MovieReviewResponse> response) {
-                if (response.isSuccessful())
-                    movieReviewsList.postValue((ArrayList<MovieReview>) response.body().getMovieReviews());
-                else
-                    movieReviewsList.postValue(null);
-            }
-
-            @Override
-            public void onFailure(Call<MovieReviewResponse> call, Throwable t) {
-                Log.e("API Service Presenter >"  , " error in getting data from API");
-                Log.e("error message > " , t.getMessage());
-            }
-        });
-
-        return movieReviewsList;
     }
 
-    public MutableLiveData<ArrayList<MovieTrailer>> getMovieTrailersListData(final int movieID){
-        movieTrailersList = new MutableLiveData<>();
-
-        final Call<MovieVideosResponse> movieVideosResponseCall = apiService
-                .getMovieTrailers(
+    public Single<MovieVideosResponse> getMovieTrailersListData(final int movieID){
+        return apiService.getMovieTrailers(
                         movieID ,
                         ApiClient.API_KEY ,
                         ApiClient.LANGUAGE);
-        movieVideosResponseCall.enqueue(new Callback< MovieVideosResponse >() {
-            @Override
-            public void onResponse(Call<MovieVideosResponse> call, Response<MovieVideosResponse> response) {
-                if (response.isSuccessful()){
-                    if (response.body().getMovieTrailers().size() > 0)
-                        movieTrailersList.postValue((ArrayList<MovieTrailer>) response.body().getMovieTrailers());
-                }else{
-                    movieTrailersList.postValue(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieVideosResponse> call, Throwable t) {
-                Log.e("API Service Presenter >"  , " error in getting data from API");
-                Log.e("error message > " , t.getMessage());
-            }
-        });
-        return movieTrailersList;
     }
 
 }

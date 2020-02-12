@@ -9,7 +9,6 @@ import com.example.moviebase.R;
 import com.example.moviebase.adapters.MovieReviewsAdapter;
 import com.example.moviebase.adapters.MovieTrailersAdapter;
 import com.example.moviebase.adapters.MoviesAdapter;
-import com.example.moviebase.dagger.MyApplication;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.models.Movie;
 import com.example.moviebase.models.MovieDetails;
@@ -61,7 +60,7 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
         activityMovieInformationBinding.setMovie(movie);
 
-        //MyApplication.getApplicationComponent().inject(this);
+        //BaseApplication.getApplicationComponent().inject(this);
 
         movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
 

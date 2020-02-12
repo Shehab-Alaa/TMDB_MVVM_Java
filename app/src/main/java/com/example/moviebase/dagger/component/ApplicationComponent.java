@@ -3,7 +3,7 @@ package com.example.moviebase.dagger.component;
 
 import android.app.Application;
 
-import com.example.moviebase.dagger.MyApplication;
+import com.example.moviebase.dagger.BaseApplication;
 import com.example.moviebase.dagger.builders.ActivitiesBuilderModule;
 import com.example.moviebase.dagger.modules.AppModule;
 import com.example.moviebase.dagger.builders.FragmentsBuilderModule;
@@ -24,7 +24,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         , ViewModelFactoryModule.class
         , ActivitiesBuilderModule.class
         , FragmentsBuilderModule.class})
-public interface ApplicationComponent extends AndroidInjector<MyApplication> {
+public interface ApplicationComponent extends AndroidInjector< BaseApplication > {
 
     @Component.Builder
     interface Builder{
