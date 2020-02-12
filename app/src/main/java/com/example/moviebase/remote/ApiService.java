@@ -1,4 +1,4 @@
-package com.example.moviebase.clients;
+package com.example.moviebase.remote;
 
 import com.example.moviebase.models.DataResponse;
 import com.example.moviebase.models.MovieDetails;

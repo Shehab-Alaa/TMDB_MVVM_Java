@@ -3,14 +3,22 @@ package com.example.moviebase.dagger.modules;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.moviebase.clients.ApiClient;
-import com.example.moviebase.clients.ApiService;
+import com.example.moviebase.remote.clients.ApiClient;
+import com.example.moviebase.remote.ApiHelper;
+import com.example.moviebase.remote.ApiService;
+import com.example.moviebase.remote.AppApiHelper;
+import com.example.moviebase.database.AppDatabase;
+import com.example.moviebase.database.AppDbHelper;
+import com.example.moviebase.database.DbHelper;
+import com.example.moviebase.repositories.DataRepoHelper;
+import com.example.moviebase.repositories.DataRepository;
 import com.example.moviebase.utils.NetworkUtils;
 
 import java.io.IOException;
 
 import javax.inject.Singleton;
 
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
@@ -24,6 +32,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class AppModule {
+
+    @Provides
+    @Singleton
+    static ApiHelper provideApiHelper(AppApiHelper appApiHelper){
+        return appApiHelper;
+    }
 
     @Provides
     @Singleton
@@ -86,7 +100,28 @@ public class AppModule {
 
     @Provides
     @Singleton
+    static DataRepoHelper provideDataRepoHelper(DataRepository dataRepository)
+    {
+        return dataRepository;
+    }
+
+    @Provides
+    @Singleton
     static Context provideApplicationContext(Application application){
         return application;
+    }
+
+
+    @Provides
+    @Singleton
+    static AppDatabase provideFavoriteMoviesRoomDB(Context context){
+        return Room.databaseBuilder(context , AppDatabase.class , "FavoriteMovies")
+                .fallbackToDestructiveMigration().build();
+    }
+
+    @Provides
+    @Singleton
+    static DbHelper provideAppDbHelper(AppDbHelper appDbHelper){
+        return appDbHelper;
     }
 }

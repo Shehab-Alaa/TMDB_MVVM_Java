@@ -60,8 +60,6 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
         activityMovieInformationBinding.setMovie(movie);
 
-        //BaseApplication.getApplicationComponent().inject(this);
-
         movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
 
         activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);

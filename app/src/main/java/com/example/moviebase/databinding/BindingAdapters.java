@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.example.moviebase.R;
 import com.example.moviebase.caches.PicassoCache;
-import com.example.moviebase.clients.ApiClient;
-import com.example.moviebase.clients.YoutubeClient;
+import com.example.moviebase.remote.clients.ApiClient;
+import com.example.moviebase.remote.clients.YoutubeClient;
 import com.example.moviebase.models.Category;
 import com.squareup.picasso.Callback;
 

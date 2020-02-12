@@ -9,6 +9,7 @@ import com.example.moviebase.models.MovieReview;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ public MovieReviewsAdapter(ArrayList<MovieReview> movieReviews) {
         this.movieReviews = movieReviews;
         }
 
+@NonNull
 @Override
 public MovieReviewVHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     ItemMovieReviewBinding itemMovieReviewBinding = DataBindingUtil.inflate(

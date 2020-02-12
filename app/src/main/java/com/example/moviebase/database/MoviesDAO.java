@@ -4,19 +4,19 @@ import com.example.moviebase.models.Movie;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
 @Dao
 public interface MoviesDAO {
-
     @Insert
-    long addFavoriteMovie(Movie movie);
+    void insert(Movie movie);
 
     @Query("select * from FavoriteMovies")
-    List<Movie> getFavoriteMovies();
+    LiveData<List<Movie>> loadAll();
 
     @Query("delete from FavoriteMovies where id = :movieID")
-    int removeFavoriteMovie(long movieID);
+    void delete(long movieID);
 }

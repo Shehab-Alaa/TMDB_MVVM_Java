@@ -1,4 +1,4 @@
-package com.example.moviebase.clients;
+package com.example.moviebase.remote.clients;
 
 public class ApiClient {
 
