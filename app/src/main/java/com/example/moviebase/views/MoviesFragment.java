@@ -22,13 +22,12 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 
-public class MoviesFragment extends Fragment {
+public class MoviesFragment extends DaggerFragment   {
 
     private Context context;
     private MoviesViewModel moviesViewModel;
@@ -40,11 +39,6 @@ public class MoviesFragment extends Fragment {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public void onAttach(Context context) {

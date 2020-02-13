@@ -6,8 +6,6 @@ import android.app.Application;
 import com.example.moviebase.dagger.BaseApplication;
 import com.example.moviebase.dagger.builders.ActivitiesBuilderModule;
 import com.example.moviebase.dagger.modules.AppModule;
-import com.example.moviebase.dagger.builders.FragmentsBuilderModule;
-import com.example.moviebase.dagger.modules.ViewModelFactoryModule;
 
 
 import javax.inject.Singleton;
@@ -21,9 +19,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component (modules = {
           AndroidSupportInjectionModule.class
         , AppModule.class
-        , ViewModelFactoryModule.class
-        , ActivitiesBuilderModule.class
-        , FragmentsBuilderModule.class})
+        , ActivitiesBuilderModule.class})
 public interface ApplicationComponent extends AndroidInjector< BaseApplication > {
 
     @Component.Builder
