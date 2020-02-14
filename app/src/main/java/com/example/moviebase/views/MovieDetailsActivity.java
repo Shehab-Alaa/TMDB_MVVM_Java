@@ -61,6 +61,7 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         activityMovieInformationBinding.setMovie(movie);
 
         movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
+        movieDetailsViewModel.checkFavoriteMovies(movie.getId()); // to set UI and observe favorite logic
 
         activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
 
@@ -80,6 +81,17 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         movieDetailsViewModel.getMovieTrailersListData(movie.getId());
         movieDetailsViewModel.getMovieReviewsListData(movie.getId() , 1);
 
+        // Favorite FAB
+        movieDetailsViewModel.getIsFavorite().observe(this, new Observer< Boolean >() {
+            @Override
+            public void onChanged(Boolean isFavorite) {
+                if (isFavorite)
+                    activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_favorite);
+                else
+                    activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_un_favorite);
+            }
+        });
+        //
 
         // Movie Details Section
         movieDetailsViewModel.getMovieDetails().observe(this, new Observer< MovieDetails >() {

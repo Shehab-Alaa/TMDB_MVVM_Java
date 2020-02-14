@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 
 @Singleton
@@ -43,5 +44,10 @@ public class AppDbHelper implements DbHelper {
             appDatabase.getMoviesDAO().delete(movieID);
             return true;
         });
+    }
+
+    @Override
+    public Single< Integer > isFavoriteMovie(long movieID) {
+        return appDatabase.getMoviesDAO().isExist(movieID);
     }
 }

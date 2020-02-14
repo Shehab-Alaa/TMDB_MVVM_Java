@@ -67,7 +67,23 @@ public class MoviesFragment extends DaggerFragment   {
 
         initMoviesRecyclerView(2 ,25);
 
-        getMoviesData(1);
+        if (category.equals("favorite")){
+            getFavoriteMovies();
+        }else {
+            getMoviesData(1);}
+
+        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , new Observer< ArrayList< Movie > >() {
+            @Override
+            public void onChanged(ArrayList<Movie> movies) {
+                if (movies != null){
+                    moviesBinding.progressBar.setVisibility(View.INVISIBLE);
+                    moviesList.addAll(movies);
+                    moviesAdapter.notifyDataSetChanged();
+                }else{
+                    Log.i("Here" , "Iam Not Changed");
+                }
+            }
+        });
 
         return view;
     }
@@ -89,20 +105,13 @@ public class MoviesFragment extends DaggerFragment   {
     }
 
     private void getMoviesData(int page){
-        moviesViewModel.getMoviesData(category,page);
-        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , new Observer< ArrayList< Movie > >() {
-            @Override
-            public void onChanged(ArrayList<Movie> movies) {
-                if (movies != null){
-                  moviesBinding.progressBar.setVisibility(View.INVISIBLE);
-                  moviesList.addAll(movies);
-                  moviesAdapter.notifyDataSetChanged();
-                }else{
-                    Log.i("Here" , "Iam Not Changed");
-                }
-            }
-        });
+        moviesViewModel.getMoviesListApiCall(category,page);
     }
+
+    private void getFavoriteMovies(){
+        moviesViewModel.getFavoriteMoviesList();
+    }
+
 
 }
 

@@ -1,10 +1,13 @@
 package com.example.moviebase.viewmodels;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.eventhandlers.OnFavoriteBtnClick;
@@ -18,6 +21,7 @@ import com.example.moviebase.models.MovieTrailer;
 import com.example.moviebase.models.MovieVideosResponse;
 import com.example.moviebase.repositories.DataRepository;
 import com.example.moviebase.views.MovieDetailsActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -28,6 +32,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.Scheduler;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -42,6 +47,7 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
     private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
     private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
     private CompositeDisposable compositeDisposable;
+    private MutableLiveData<Boolean> isFavorite;
 
 
     @Inject
@@ -52,6 +58,7 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
         movieTrailersList = new MutableLiveData<>();
         movieReviewsList = new MutableLiveData<>();
         compositeDisposable = new CompositeDisposable();
+        isFavorite = new MutableLiveData<>();
     }
 
     public void getMovieDetailsData(int movieID) {
@@ -153,6 +160,31 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
         return movieReviewsList;
     }
 
+    public void checkFavoriteMovies(long movieID){
+        dataRepository.isFavoriteMovie(movieID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver< Integer >() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Integer integer) {
+                        if (integer == 0)
+                            isFavorite.setValue(false);
+                        else
+                            isFavorite.setValue(true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        isFavorite.setValue(false);
+                    }
+                });
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onMovieItemClick(View itemView, Movie movie) {
@@ -171,8 +203,17 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
 
     @Override
     public void onFavoriteBtnClick(View view, Movie movie) {
-        //Log.i("Here" , floatingActionButton.getBack + " ");
-        Log.i("Here" , view.getBackground() + " ");
+        if (isFavorite.getValue()){
+            dataRepository.removeFavoriteMovie(movie.getId());
+            isFavorite.setValue(false);
+        }else{
+            dataRepository.addFavoriteMovie(movie);
+            isFavorite.setValue(true);
+        }
+    }
+
+    public MutableLiveData< Boolean > getIsFavorite() {
+        return isFavorite;
     }
 
     @Override

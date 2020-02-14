@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import io.reactivex.Single;
 
 @Dao
 public interface MoviesDAO {
@@ -19,4 +20,7 @@ public interface MoviesDAO {
 
     @Query("delete from FavoriteMovies where id = :movieID")
     void delete(long movieID);
+
+    @Query("select COUNT(*) from FavoriteMovies where id = :movieID")
+    Single<Integer> isExist(long movieID);
 }

@@ -42,7 +42,7 @@ public class MoviesViewModel extends ViewModel implements OnMovieItemClick {
         compositeDisposable = new CompositeDisposable();
     }
 
-    public void getMoviesData(String category , int page){
+    public void getMoviesListApiCall(String category , int page){
          dataRepository.getMoviesList(category,page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,6 +60,11 @@ public class MoviesViewModel extends ViewModel implements OnMovieItemClick {
                         Log.i("Here" , e.getMessage());
                     }
              });
+    }
+
+    public void getFavoriteMoviesList(){
+        //TODO::
+        moviesList.setValue((ArrayList< Movie >) dataRepository.getFavoriteMovies().getValue());
     }
 
     public MutableLiveData< ArrayList<Movie>> getMoviesList() {

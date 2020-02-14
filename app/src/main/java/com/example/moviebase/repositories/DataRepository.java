@@ -73,6 +73,11 @@ public class DataRepository implements DataRepoHelper{
     public Observable< Boolean > removeFavoriteMovie(long movieID) {
         return appDbHelper.removeFavoriteMovie(movieID);
     }
+
+    @Override
+    public Single<Integer> isFavoriteMovie(long movieID) {
+        return appDbHelper.isFavoriteMovie(movieID);
+    }
 }
 
 
