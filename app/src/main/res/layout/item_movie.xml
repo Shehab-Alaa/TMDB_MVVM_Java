@@ -6,10 +6,10 @@
     <data>
         <variable
             name="movie"
-            type="com.example.moviebase.models.Movie" />
+            type="com.example.moviebase.data.model.Movie" />
         <variable
             name="eventHandler"
-            type="com.example.moviebase.databinding.eventhandlers.OnMovieItemClick" />
+            type="com.example.moviebase.utils.eventhandlers.OnMovieItemClick" />
     </data>
 
 <androidx.cardview.widget.CardView

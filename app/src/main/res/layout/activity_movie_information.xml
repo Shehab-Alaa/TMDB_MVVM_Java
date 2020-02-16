@@ -7,20 +7,20 @@
     <data>
         <variable
             name="movie"
-            type="com.example.moviebase.models.Movie" />
+            type="com.example.moviebase.data.model.Movie" />
         <variable
             name="movieDetails"
-            type="com.example.moviebase.models.MovieDetails" />
+            type="com.example.moviebase.data.model.MovieDetails" />
         <variable
             name="eventHandler"
-            type="com.example.moviebase.databinding.eventhandlers.OnFavoriteBtnClick" />
+            type="com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClick" />
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dNavBackground"
-    tools:context="com.example.moviebase.views.MainActivity">
+    tools:context="com.example.moviebase.ui.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"

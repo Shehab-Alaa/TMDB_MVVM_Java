@@ -5,7 +5,7 @@
     <data>
         <variable
             name="movieTrailer"
-            type="com.example.moviebase.models.MovieTrailer" />
+            type="com.example.moviebase.data.model.MovieTrailer" />
     </data>
 
 <androidx.cardview.widget.CardView
