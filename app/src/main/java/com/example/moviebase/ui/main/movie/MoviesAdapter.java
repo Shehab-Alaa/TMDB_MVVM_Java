@@ -19,8 +19,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     private ArrayList<Movie> movies;
     private OnMovieItemClick onMovieItemClick;
 
-    public MoviesAdapter(ArrayList<Movie> movies , OnMovieItemClick onMovieItemClick){
+
+    public MoviesAdapter(ArrayList<Movie> movies){
         this.movies = movies;
+    }
+
+    public void setOnMovieItemClickListener(OnMovieItemClick onMovieItemClick) {
         this.onMovieItemClick = onMovieItemClick;
     }
 
@@ -36,6 +40,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     @Override
     public void onBindViewHolder(@NonNull MoviesViewHolder holder, final int position) {
         holder.onBindMovie(movies.get(position));
+    }
+
+    public void addAll(ArrayList<Movie> movies){
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
     }
 
     @Override

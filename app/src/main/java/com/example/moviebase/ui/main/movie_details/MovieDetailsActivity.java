@@ -28,21 +28,17 @@ import dagger.android.support.DaggerAppCompatActivity;
 public class MovieDetailsActivity extends DaggerAppCompatActivity {
 
     private MovieDetailsViewModel movieDetailsViewModel;
-
-    private MoviesAdapter similarMoviesAdapter;
-    private ArrayList<Movie> similarMoviesList;
-
-    private MovieReviewsAdapter movieReviewsAdapter;
-    private ArrayList<MovieReview> movieReviewsList;
-
-    private MovieTrailersAdapter movieTrailersAdapter;
-    private ArrayList<MovieTrailer> movieTrailersList;
     private ActivityMovieInformationBinding activityMovieInformationBinding;
     private Movie movie;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
+    @Inject
+    MoviesAdapter similarMoviesAdapter;
+    @Inject
+    MovieReviewsAdapter movieReviewsAdapter;
+    @Inject
+    MovieTrailersAdapter movieTrailersAdapter;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -95,47 +91,36 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         ////
 
         // Similar Movies Section
-        similarMoviesList = new ArrayList<>();
-        similarMoviesAdapter = new MoviesAdapter(similarMoviesList , movieDetailsViewModel);
+        similarMoviesAdapter.setOnMovieItemClickListener(movieDetailsViewModel);
 
         initRecyclerView(activityMovieInformationBinding.rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
 
         movieDetailsViewModel.getSimilarMoviesList().observe(this, new Observer< ArrayList< Movie > >() {
             @Override
             public void onChanged(ArrayList<Movie> movies) {
-                similarMoviesList.addAll(movies);
-                similarMoviesAdapter.notifyDataSetChanged();
+                similarMoviesAdapter.addAll(movies);
             }
         });
         /////
 
-        // Movie Reviews Section
-        movieReviewsList = new ArrayList<>();
-        movieReviewsAdapter = new MovieReviewsAdapter(movieReviewsList);
 
         initRecyclerView(activityMovieInformationBinding.rvMovieReviews , movieReviewsAdapter , RecyclerView.VERTICAL);
 
         movieDetailsViewModel.getMovieReviewsList().observe(this, new Observer< ArrayList< MovieReview > >() {
             @Override
             public void onChanged(ArrayList< MovieReview > movieReviews) {
-                movieReviewsList.addAll(movieReviews);
-                movieReviewsAdapter.notifyDataSetChanged();
+                movieReviewsAdapter.addAll(movieReviews);
             }
         });
         ////
 
-
-        // Movie Trailers Section
-        movieTrailersList = new ArrayList<>();
-        movieTrailersAdapter = new MovieTrailersAdapter(movieTrailersList);
 
         initRecyclerView(activityMovieInformationBinding.rvMovieTrailers,movieTrailersAdapter,RecyclerView.HORIZONTAL);
 
         movieDetailsViewModel.getMovieTrailersList().observe(this, new Observer< ArrayList< MovieTrailer > >() {
             @Override
             public void onChanged(ArrayList< MovieTrailer > movieTrailers) {
-                movieTrailersList.addAll(movieTrailers);
-                movieTrailersAdapter.notifyDataSetChanged();
+                movieTrailersAdapter.addAll(movieTrailers);
             }
         });
         ////

@@ -33,14 +33,15 @@ public class MoviesFragment extends DaggerFragment   {
     private Context context;
     private MoviesViewModel moviesViewModel;
     private String category;
-    private MoviesAdapter moviesAdapter;
     private FragmentMoviesBinding moviesBinding;
-    private ArrayList<Movie> moviesList;
     private GridLayoutManager gridLayoutManager;
     private int totalMoviesPages;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
+    @Inject
+    MoviesAdapter moviesAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -61,8 +62,7 @@ public class MoviesFragment extends DaggerFragment   {
         // specify view model of this Fragment
         moviesViewModel = new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
 
-        moviesList = new ArrayList<>();
-        moviesAdapter = new MoviesAdapter(moviesList , moviesViewModel);
+        moviesAdapter.setOnMovieItemClickListener(moviesViewModel);
 
         moviesBinding.setLifecycleOwner(this);
         moviesBinding.progressBar.setVisibility(View.VISIBLE);
@@ -130,8 +130,7 @@ public class MoviesFragment extends DaggerFragment   {
 
     private void updateMoviesList(List<Movie> movies){
         moviesBinding.progressBar.setVisibility(View.INVISIBLE);
-        moviesList.addAll(movies);
-        moviesAdapter.notifyDataSetChanged();
+        moviesAdapter.addAll((ArrayList< Movie >) movies);
     }
 
     private void getMoviesDataApiCall(int page){

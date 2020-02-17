@@ -29,12 +29,12 @@ public class FavoriteMoviesFragment extends DaggerFragment {
 
     private Context context;
     private FavoriteMoviesViewModel favoriteMoviesViewModel;
-    private FavoriteMoviesAdapter favoriteMoviesAdapter;
     private FragmentFavoriteMoviesBinding favoriteMoviesBinding;
-    private ArrayList<Movie> favoriteMoviesList;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    FavoriteMoviesAdapter favoriteMoviesAdapter;
 
     @Override
     public void onAttach(Context context) {
@@ -53,8 +53,7 @@ public class FavoriteMoviesFragment extends DaggerFragment {
         // specify view model of this Fragment
         favoriteMoviesViewModel = new ViewModelProvider(this , viewModelFactory).get(FavoriteMoviesViewModel.class);
 
-        favoriteMoviesList = new ArrayList<>();
-        favoriteMoviesAdapter = new FavoriteMoviesAdapter(favoriteMoviesList , favoriteMoviesViewModel);
+        favoriteMoviesAdapter.setOnMovieItemClickListener(favoriteMoviesViewModel);
 
         favoriteMoviesBinding.setLifecycleOwner(this);
         favoriteMoviesBinding.progressBar.setVisibility(View.VISIBLE);
@@ -97,7 +96,6 @@ public class FavoriteMoviesFragment extends DaggerFragment {
 
     private void updateMoviesList(List<Movie> movies){
         favoriteMoviesBinding.progressBar.setVisibility(View.INVISIBLE);
-        favoriteMoviesList.addAll(movies);
-        favoriteMoviesAdapter.notifyDataSetChanged();
+        favoriteMoviesAdapter.addAll((ArrayList< Movie >) movies);
     }
 }

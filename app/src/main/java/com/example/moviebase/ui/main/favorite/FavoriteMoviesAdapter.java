@@ -19,9 +19,17 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter< FavoriteMoviesA
     private ArrayList< Movie > favoriteMoviesList;
     private OnMovieItemClick onMovieItemClick;
 
-    public FavoriteMoviesAdapter(ArrayList<Movie> movies , OnMovieItemClick onMovieItemClick){
+    public FavoriteMoviesAdapter(ArrayList<Movie> movies){
         this.favoriteMoviesList = movies;
+    }
+
+    public void setOnMovieItemClickListener(OnMovieItemClick onMovieItemClick) {
         this.onMovieItemClick = onMovieItemClick;
+    }
+
+    public void addAll(ArrayList< Movie > favoriteMoviesList){
+        this.favoriteMoviesList.addAll(favoriteMoviesList);
+        notifyDataSetChanged();
     }
 
     @NonNull

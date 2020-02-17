@@ -40,6 +40,11 @@ public class MovieTrailersAdapter  extends RecyclerView.Adapter<MovieTrailersAda
         return movieTrailers.size();
     }
 
+    public void addAll(ArrayList<MovieTrailer> movieTrailers){
+        this.movieTrailers.addAll(movieTrailers);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ItemMovieTrailerBinding itemMovieTrailerBinding;
