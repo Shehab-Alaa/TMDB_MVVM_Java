@@ -12,7 +12,7 @@ public abstract class RecyclerViewScrollListenerUtils  extends RecyclerView.OnSc
     private int visibleThreshold = 5;
 
     // The current offset index of data you have loaded
-    private int currentPage = 0;
+    private int currentPage = 1;
 
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
@@ -21,7 +21,7 @@ public abstract class RecyclerViewScrollListenerUtils  extends RecyclerView.OnSc
     private boolean loading = true;
 
     // Sets the starting page index
-    private int startingPageIndex = 1;
+    private int startingPageIndex = 2;
 
     RecyclerView.LayoutManager mLayoutManager;
 

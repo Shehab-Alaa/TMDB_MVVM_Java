@@ -69,7 +69,10 @@ public class MoviesFragment extends DaggerFragment   {
 
         initMoviesRecyclerView(2 ,25);
 
-        checkSelectedCategory();
+        getMoviesDataApiCall(1);
+        observeMoviesListData();
+        observeTotalMoviesPages();
+        setupEndlessRecyclerView();
 
         return view;
     }
@@ -90,28 +93,6 @@ public class MoviesFragment extends DaggerFragment   {
         moviesBinding.moviesRv.setAdapter(moviesAdapter);
     }
 
-    private void observeFavoriteMoviesListData(){
-        moviesViewModel.getFavoriteMoviesList().observe(getViewLifecycleOwner(), new Observer< List< Movie > >() {
-            @Override
-            public void onChanged(List< Movie > movies) {
-                updateMoviesList(movies);
-            }
-        });
-    }
-
-    private void checkSelectedCategory(){
-        if (category.equals("favorite")){
-            getFavoriteMovies();
-            observeFavoriteMoviesListData();
-        }else {
-            getMoviesDataApiCall(1);
-            observeMoviesListData();
-            observeTotalMoviesPages();
-            setupEndlessRecyclerView();
-        }
-
-    }
-
     private void observeTotalMoviesPages(){
         totalMoviesPages = 1;
         moviesViewModel.getTotalMoviesPages().observe(getViewLifecycleOwner(), new Observer< Integer >() {
@@ -123,11 +104,10 @@ public class MoviesFragment extends DaggerFragment   {
     }
 
     private void setupEndlessRecyclerView(){
-       //TODO:: setup correct api limit pages;
         RecyclerViewScrollListenerUtils rvScrollListenerUtils = new RecyclerViewScrollListenerUtils(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (page != totalMoviesPages){
+                if (page <= totalMoviesPages){
                     moviesViewModel.getMoviesListApiCall(category,page);
                 }
             }
@@ -155,14 +135,8 @@ public class MoviesFragment extends DaggerFragment   {
     }
 
     private void getMoviesDataApiCall(int page){
-        Log.i("Here" , "Category: " + category);
         moviesViewModel.getMoviesListApiCall(category,page);
     }
-
-    private void getFavoriteMovies(){
-        moviesViewModel.getFavoriteMoviesList();
-    }
-
 
 }
 
