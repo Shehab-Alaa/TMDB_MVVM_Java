@@ -1,16 +1,14 @@
 package com.example.moviebase.ui.main.favorite;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.FragmentFavoriteMoviesBinding;
+import com.example.moviebase.ui.base.BaseFragment;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 
 import java.util.ArrayList;
@@ -18,52 +16,51 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import dagger.android.support.DaggerFragment;
 
-public class FavoriteMoviesFragment extends DaggerFragment {
+public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesBinding,FavoriteMoviesViewModel> {
 
-    private Context context;
     private FavoriteMoviesViewModel favoriteMoviesViewModel;
     private FragmentFavoriteMoviesBinding favoriteMoviesBinding;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
     @Inject
     FavoriteMoviesAdapter favoriteMoviesAdapter;
 
+
     @Override
-    public void onAttach(Context context) {
-        this.context = context;
-        super.onAttach(context);
+    public FavoriteMoviesViewModel getViewModel() {
+        favoriteMoviesViewModel = new ViewModelProvider(this , viewModelFactory).get(FavoriteMoviesViewModel.class);
+        return favoriteMoviesViewModel;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        favoriteMoviesBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_favorite_movies, container, false);
-        View view = favoriteMoviesBinding.getRoot();
-
-
-        // specify view model of this Fragment
-        favoriteMoviesViewModel = new ViewModelProvider(this , viewModelFactory).get(FavoriteMoviesViewModel.class);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         favoriteMoviesAdapter.setOnMovieItemClickListener(favoriteMoviesViewModel);
+    }
 
-        favoriteMoviesBinding.setLifecycleOwner(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        favoriteMoviesBinding = getViewDataBinding();
         favoriteMoviesBinding.progressBar.setVisibility(View.VISIBLE);
 
         initMoviesRecyclerView(2 ,25);
-
         getFavoriteMovies();
         observeFavoriteMoviesListData();
+    }
 
-        return view;
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_favorite_movies;
     }
 
     private void initMoviesRecyclerView(int spanCount , int spacing)

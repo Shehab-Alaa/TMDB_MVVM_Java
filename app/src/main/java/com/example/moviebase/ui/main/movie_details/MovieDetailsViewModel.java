@@ -138,7 +138,6 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
                 });
     }
 
-
     public MutableLiveData< MovieDetails > getMovieDetails() {
         return movieDetails;
     }

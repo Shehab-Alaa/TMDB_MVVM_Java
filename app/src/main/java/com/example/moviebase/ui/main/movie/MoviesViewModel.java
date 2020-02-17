@@ -70,11 +70,6 @@ public class MoviesViewModel extends ViewModel implements OnMovieItemClick {
              });
     }
 
-    public LiveData<List<Movie>> getFavoriteMoviesList(){
-       //TODO: observe 2 different lists from outside (Try to observe same movies list);
-       return dataRepository.getFavoriteMovies();
-    }
-
     public MutableLiveData< List<Movie>> getMoviesList() {
         return moviesList;
     }

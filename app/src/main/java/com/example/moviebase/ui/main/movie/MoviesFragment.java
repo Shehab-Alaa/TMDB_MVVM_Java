@@ -1,16 +1,14 @@
 package com.example.moviebase.ui.main.movie;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.FragmentMoviesBinding;
+import com.example.moviebase.ui.base.BaseFragment;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
@@ -20,17 +18,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerFragment;
 
-public class MoviesFragment extends DaggerFragment   {
+public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesViewModel> {
 
-    private Context context;
     private MoviesViewModel moviesViewModel;
     private String category;
     private FragmentMoviesBinding moviesBinding;
@@ -44,27 +40,20 @@ public class MoviesFragment extends DaggerFragment   {
     MoviesAdapter moviesAdapter;
 
     @Override
-    public void onAttach(Context context) {
-        // hold context from an Activity that there life cycles are tied together
-        this.context = context;
-        super.onAttach(context);
-    }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        moviesBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_movies, container, false);
-        View view = moviesBinding.getRoot();
-
+        assert getArguments() != null;
         category = getArguments().getString("category"); // request API to get all movies in this Category
 
-        // specify view model of this Fragment
-        moviesViewModel = new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
-
         moviesAdapter.setOnMovieItemClickListener(moviesViewModel);
+    }
 
-        moviesBinding.setLifecycleOwner(this);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        moviesBinding = getViewDataBinding();
         moviesBinding.progressBar.setVisibility(View.VISIBLE);
 
         initMoviesRecyclerView(2 ,25);
@@ -73,10 +62,18 @@ public class MoviesFragment extends DaggerFragment   {
         observeMoviesListData();
         observeTotalMoviesPages();
         setupEndlessRecyclerView();
-
-        return view;
     }
 
+    @Override
+    public MoviesViewModel getViewModel() {
+        moviesViewModel = new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
+        return moviesViewModel;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_movies;
+    }
 
     private void initMoviesRecyclerView(int spanCount , int spacing)
     {
