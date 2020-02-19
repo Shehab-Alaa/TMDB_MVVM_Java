@@ -13,7 +13,10 @@
             type="com.example.moviebase.data.model.MovieDetails" />
         <variable
             name="eventHandler"
-            type="com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClick" />
+            type="com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClickListener" />
+        <variable
+            name="progressBarHandler"
+            type="com.example.moviebase.utils.eventhandlers.ProgressBarHandler" />
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:backPosterUrl="@{movie.backdropPath}"/>
+                android:backPosterUrl="@{movie.backdropPath}" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -105,7 +108,8 @@
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitXY"
                     android:src="@mipmap/ic_launcher"
-                    android:moviePosterUrl="@{movie.posterPath}"/>
+                    android:moviePosterUrl="@{movie.posterPath}"
+                    android:progressBarHandler="@{progressBarHandler}"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/movie_details_layout"

@@ -8,6 +8,7 @@ import com.example.moviebase.R;
 import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.data.remote.client.YoutubeClient;
 import com.example.moviebase.data.model.Category;
+import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 import com.squareup.picasso.Callback;
 
 import java.util.List;
@@ -16,44 +17,42 @@ import androidx.databinding.BindingAdapter;
 
 public class BindingAdaptersUtils {
 
-    @BindingAdapter({"android:backPosterUrl"})
+    @BindingAdapter({"android:backPosterUrl" })
     public static void loadBackPosterImage(final ImageView backPoster, String backPosterUrl){
 
         PicassoCache
                 .getPicassoInstance(backPoster.getContext())
                 .load(ApiClient.BACKDROP_BASE_URL + backPosterUrl)
-                //.placeholder(R.drawable.movie_poster)
                 .into(backPoster, new Callback() {
                     @Override
                     public void onSuccess() {
-                        //loadingMoviePoster.setVisibility(View.INVISIBLE);
                     }
-
                     @Override
                     public void onError(Exception e) {
-                        //loadingMoviePoster.setVisibility(View.INVISIBLE);
                         backPoster.setImageResource(R.drawable.movie_poster);
                     }
                 });
     }
 
-    @BindingAdapter({"android:moviePosterUrl"})
-    public static void loadMoviePosterImage(final ImageView moviePoster, String moviePosterUrl){
-
+    @BindingAdapter({"android:moviePosterUrl" , "android:progressBarHandler"})
+    public static void loadMoviePosterImage(final ImageView moviePoster, String moviePosterUrl , ProgressBarHandler progressBarHandler){
+        if (progressBarHandler != null)
+            progressBarHandler.setProgressBarVisibility(true);
         PicassoCache
                 .getPicassoInstance(moviePoster.getContext())
                 .load(ApiClient.POSTER_BASE_URL + moviePosterUrl)
-                //.placeholder(R.drawable.movie_poster)
                 .into(moviePoster, new Callback() {
                     @Override
                     public void onSuccess() {
-                        //loadingMoviePoster.setVisibility(View.INVISIBLE);
+                        if (progressBarHandler != null)
+                            progressBarHandler.setProgressBarVisibility(false);
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        //loadingMoviePoster.setVisibility(View.INVISIBLE);
                         moviePoster.setImageResource(R.drawable.movie_poster);
+                        if (progressBarHandler != null)
+                            progressBarHandler.setProgressBarVisibility(false);
                     }
                 });
     }

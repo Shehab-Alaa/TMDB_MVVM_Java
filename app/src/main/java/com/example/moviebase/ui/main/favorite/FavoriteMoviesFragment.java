@@ -1,5 +1,6 @@
 package com.example.moviebase.ui.main.favorite;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -18,7 +19,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -32,7 +32,6 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
 
     @Inject
     FavoriteMoviesAdapter favoriteMoviesAdapter;
-
 
     @Override
     public FavoriteMoviesViewModel getViewModel() {
@@ -53,7 +52,7 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
         favoriteMoviesBinding = getViewDataBinding();
         favoriteMoviesBinding.progressBar.setVisibility(View.VISIBLE);
 
-        initMoviesRecyclerView(2 ,25);
+        checkScreenOrientation();
         getFavoriteMovies();
         observeFavoriteMoviesListData();
     }
@@ -61,6 +60,17 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     @Override
     public int getLayoutId() {
         return R.layout.fragment_favorite_movies;
+    }
+
+    private void checkScreenOrientation(){
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // portrait mode
+            initMoviesRecyclerView(2 , 25);
+        } else {
+            // landscape mode
+            initMoviesRecyclerView(4 , 10);
+        }
     }
 
     private void initMoviesRecyclerView(int spanCount , int spacing)
@@ -83,12 +93,7 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     }
 
     private void observeFavoriteMoviesListData(){
-        favoriteMoviesViewModel.getFavoriteMoviesList().observe(getViewLifecycleOwner(), new Observer< List< Movie > >() {
-            @Override
-            public void onChanged(List< Movie > movies) {
-                updateMoviesList(movies);
-            }
-        });
+        favoriteMoviesViewModel.getFavoriteMoviesList().observe(getViewLifecycleOwner(), movies -> updateMoviesList(movies));
     }
 
     private void updateMoviesList(List<Movie> movies){

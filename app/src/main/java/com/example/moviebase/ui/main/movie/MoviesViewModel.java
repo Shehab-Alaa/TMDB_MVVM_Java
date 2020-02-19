@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.moviebase.R;
-import com.example.moviebase.utils.eventhandlers.OnMovieItemClick;
+import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.Movie;
 
 import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
+import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
 import java.util.List;
 
@@ -21,7 +22,6 @@ import javax.inject.Inject;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.SingleObserver;
@@ -30,7 +30,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MoviesViewModel extends ViewModel implements OnMovieItemClick {
+public class MoviesViewModel extends ViewModel implements OnMovieItemClickListener {
 
     private DataRepository dataRepository;
     private MutableLiveData< List<Movie> > moviesList;;
@@ -95,4 +95,5 @@ public class MoviesViewModel extends ViewModel implements OnMovieItemClick {
         super.onCleared();
         compositeDisposable.dispose();
     }
+
 }

@@ -9,7 +9,10 @@
             type="com.example.moviebase.data.model.Movie" />
         <variable
             name="eventHandler"
-            type="com.example.moviebase.utils.eventhandlers.OnMovieItemClick" />
+            type="com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener" />
+        <variable
+            name="progressBarHandler"
+            type="com.example.moviebase.utils.eventhandlers.ProgressBarHandler" />
     </data>
 
 <androidx.cardview.widget.CardView
@@ -31,7 +34,8 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:background="@color/dBackground"
-            android:moviePosterUrl="@{movie.getPosterPath()}"/>
+            android:moviePosterUrl="@{movie.getPosterPath()}"
+            android:progressBarHandler="@{progressBarHandler}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -61,7 +65,7 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="center"
-       android:visibility="invisible"/>
+       android:visibility="visible"/>
 
 </androidx.cardview.widget.CardView>
 

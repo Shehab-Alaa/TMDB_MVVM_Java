@@ -4,6 +4,6 @@ import android.view.View;
 
 import com.example.moviebase.data.model.Movie;
 
-public interface OnMovieItemClick {
-    void onMovieItemClick(View view , Movie movie);
+public interface OnFavoriteBtnClickListener {
+    void onFavoriteBtnClick(View view, Movie movie);
 }

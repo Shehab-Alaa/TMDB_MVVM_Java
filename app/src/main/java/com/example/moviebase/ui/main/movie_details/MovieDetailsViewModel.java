@@ -1,15 +1,16 @@
 package com.example.moviebase.ui.main.movie_details;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.moviebase.R;
-import com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClick;
-import com.example.moviebase.utils.eventhandlers.OnMovieItemClick;
+import com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClickListener;
+import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.data.model.MovieDetails;
@@ -18,6 +19,8 @@ import com.example.moviebase.data.model.api.MovieReviewResponse;
 import com.example.moviebase.data.model.MovieTrailer;
 import com.example.moviebase.data.model.api.MovieVideosResponse;
 import com.example.moviebase.data.DataRepository;
+import com.example.moviebase.utils.eventhandlers.OnMovieTrailerClickListener;
+import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
 import java.util.ArrayList;
 
@@ -34,7 +37,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick , OnFavoriteBtnClick {
+public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClickListener, OnFavoriteBtnClickListener , OnMovieTrailerClickListener {
 
     private DataRepository dataRepository;
     private MutableLiveData<MovieDetails> movieDetails;
@@ -43,7 +46,6 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
     private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
     private CompositeDisposable compositeDisposable;
     private MutableLiveData<Boolean> isFavorite;
-
 
     @Inject
     public MovieDetailsViewModel(DataRepository dataRepository) {
@@ -168,11 +170,9 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
                     public void onSuccess(Integer integer) {
                         if (integer == 0)
                         {
-                            Log.i("Here","Not Favorite");
                             isFavorite.setValue(false);
                         }
                         else{
-                            Log.i("Here","Favorite");
                             isFavorite.setValue(true);
                         }
                     }
@@ -210,7 +210,6 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
             isFavorite.setValue(true);
         }
         int counter = dataRepository.getRowsCount();
-       Log.i("Here" , "Counter: " + counter);
     }
 
     public MutableLiveData< Boolean > getIsFavorite() {
@@ -222,4 +221,20 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
         super.onCleared();
         compositeDisposable.dispose();
     }
+
+    @Override
+    public void onMovieTrailerClick(View view, MovieTrailer movieTrailer) {
+        openYoutubeApp(view , movieTrailer.getKey());
+    }
+
+    private void openYoutubeApp(View view ,String videoId){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+        try {
+            view.getContext().startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            view.getContext().startActivity(webIntent);
+        }
+    }
+
 }

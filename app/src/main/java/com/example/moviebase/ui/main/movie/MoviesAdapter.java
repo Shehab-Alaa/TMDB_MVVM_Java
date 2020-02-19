@@ -1,12 +1,15 @@
 package com.example.moviebase.ui.main.movie;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ItemMovieBinding;
-import com.example.moviebase.utils.eventhandlers.OnMovieItemClick;
+import com.example.moviebase.ui.base.BaseViewHolder;
+import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.Movie;
+import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
 import java.util.ArrayList;
 
@@ -14,23 +17,22 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private ArrayList<Movie> movies;
-    private OnMovieItemClick onMovieItemClick;
-
+    private OnMovieItemClickListener onMovieItemClick;
 
     public MoviesAdapter(ArrayList<Movie> movies){
         this.movies = movies;
     }
 
-    public void setOnMovieItemClickListener(OnMovieItemClick onMovieItemClick) {
+    public void setOnMovieItemClickListener(OnMovieItemClickListener onMovieItemClick) {
         this.onMovieItemClick = onMovieItemClick;
     }
 
     @NonNull
     @Override
-    public MoviesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemMovieBinding itemMovieBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()), R.layout.item_movie,parent ,false
         );
@@ -38,8 +40,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MoviesViewHolder holder, final int position) {
-        holder.onBindMovie(movies.get(position));
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBind(position);
     }
 
     public void addAll(ArrayList<Movie> movies){
@@ -52,7 +54,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         return movies.size();
     }
 
-    public class MoviesViewHolder extends RecyclerView.ViewHolder  {
+
+    public class MoviesViewHolder extends BaseViewHolder implements ProgressBarHandler  {
 
         ItemMovieBinding itemMovieBinding;
 
@@ -60,13 +63,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
             super(itemMovieBinding.getRoot());
             this.itemMovieBinding = itemMovieBinding;
             this.itemMovieBinding.setEventHandler(onMovieItemClick);
+            this.itemMovieBinding.setProgressBarHandler(this);
         }
 
-        public void onBindMovie(Movie movie) {
-            // set Data to variable to set each specific Item
-            itemMovieBinding.setMovie(movie);
+        @Override
+        public void onBind(int position) {
+            itemMovieBinding.setMovie(movies.get(position));
         }
 
+        @Override
+        public void setProgressBarVisibility(boolean visibility) {
+            if (visibility)
+                itemMovieBinding.moviePosterLoading.setVisibility(View.VISIBLE);
+            else
+                itemMovieBinding.moviePosterLoading.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

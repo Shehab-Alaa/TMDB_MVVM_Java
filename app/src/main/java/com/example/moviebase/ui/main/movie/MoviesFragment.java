@@ -1,5 +1,6 @@
 package com.example.moviebase.ui.main.movie;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,10 +54,8 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         super.onViewCreated(view, savedInstanceState);
 
         moviesBinding = getViewDataBinding();
-        moviesBinding.progressBar.setVisibility(View.VISIBLE);
 
-        initMoviesRecyclerView(2 ,25);
-
+        checkScreenOrientation();
         getMoviesDataApiCall(1);
         observeMoviesListData();
         observeTotalMoviesPages();
@@ -73,6 +71,17 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     @Override
     public int getLayoutId() {
         return R.layout.fragment_movies;
+    }
+
+    private void checkScreenOrientation(){
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // portrait mode
+            initMoviesRecyclerView(2 , 25);
+        } else {
+            // landscape mode
+            initMoviesRecyclerView(4 , 10);
+        }
     }
 
     private void initMoviesRecyclerView(int spanCount , int spacing)
@@ -92,12 +101,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
 
     private void observeTotalMoviesPages(){
         totalMoviesPages = 1;
-        moviesViewModel.getTotalMoviesPages().observe(getViewLifecycleOwner(), new Observer< Integer >() {
-            @Override
-            public void onChanged(Integer pages) {
-                totalMoviesPages = pages;
-            }
-        });
+        moviesViewModel.getTotalMoviesPages().observe(getViewLifecycleOwner(), pages -> totalMoviesPages = pages);
     }
 
     private void setupEndlessRecyclerView(){
@@ -105,7 +109,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (page <= totalMoviesPages){
-                    moviesViewModel.getMoviesListApiCall(category,page);
+                    getMoviesDataApiCall(page);
                 }
             }
         };
@@ -113,14 +117,11 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     }
 
     private void observeMoviesListData(){
-        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , new Observer< List< Movie > >() {
-            @Override
-            public void onChanged(List<Movie> movies) {
-                if (movies != null){
-                    updateMoviesList(movies);
-                }else{
-                    Log.i("Here" , "No Data Changed");
-                }
+        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , movies -> {
+            if (movies != null){
+                updateMoviesList(movies);
+            }else{
+                Log.i("Here" , "No Data Changed");
             }
         });
     }
@@ -131,6 +132,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     }
 
     private void getMoviesDataApiCall(int page){
+        moviesBinding.progressBar.setVisibility(View.VISIBLE);
         moviesViewModel.getMoviesListApiCall(category,page);
     }
 

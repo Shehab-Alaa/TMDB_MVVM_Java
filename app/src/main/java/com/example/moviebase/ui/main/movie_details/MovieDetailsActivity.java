@@ -9,11 +9,6 @@ import com.example.moviebase.R;
 import com.example.moviebase.ui.main.movie.MoviesAdapter;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.data.model.Movie;
-import com.example.moviebase.data.model.MovieDetails;
-import com.example.moviebase.data.model.MovieReview;
-import com.example.moviebase.data.model.MovieTrailer;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -33,10 +28,13 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
     @Inject
     MoviesAdapter similarMoviesAdapter;
+
     @Inject
     MovieReviewsAdapter movieReviewsAdapter;
+
     @Inject
     MovieTrailersAdapter movieTrailersAdapter;
 
@@ -58,6 +56,9 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
 
         activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
 
+        activityMovieInformationBinding.collapsingToolbar.setTitleEnabled(true);
+        activityMovieInformationBinding.collapsingToolbar.setTitle(movie.getTitle());
+
         setLayoutAnimation();
 
         // API Requests Section
@@ -68,61 +69,36 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         ///
 
         // Favorite FAB
-        movieDetailsViewModel.getIsFavorite().observe(this, new Observer< Boolean >() {
-            @Override
-            public void onChanged(Boolean isFavorite) {
-                if (isFavorite){
-                    activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_favorite);
-                }
-                else{
-                    activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_un_favorite);
-                }
+        movieDetailsViewModel.getIsFavorite().observe(this, isFavorite -> {
+            if (isFavorite){
+                activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_favorite);
+            }
+            else{
+                activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_un_favorite);
             }
         });
         //
 
         // Movie Details Section
-        movieDetailsViewModel.getMovieDetails().observe(this, new Observer< MovieDetails >() {
-            @Override
-            public void onChanged(MovieDetails movieDetails) {
-                activityMovieInformationBinding.setMovieDetails(movieDetails);
-            }
-        });
+        movieDetailsViewModel.getMovieDetails().observe(this, movieDetails -> activityMovieInformationBinding.setMovieDetails(movieDetails));
         ////
 
         // Similar Movies Section
         similarMoviesAdapter.setOnMovieItemClickListener(movieDetailsViewModel);
-
         initRecyclerView(activityMovieInformationBinding.rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
-
-        movieDetailsViewModel.getSimilarMoviesList().observe(this, new Observer< ArrayList< Movie > >() {
-            @Override
-            public void onChanged(ArrayList<Movie> movies) {
-                similarMoviesAdapter.addAll(movies);
-            }
-        });
+        movieDetailsViewModel.getSimilarMoviesList().observe(this, movies -> similarMoviesAdapter.addAll(movies));
         /////
 
-
+        // Movie Reviews Section
         initRecyclerView(activityMovieInformationBinding.rvMovieReviews , movieReviewsAdapter , RecyclerView.VERTICAL);
-
-        movieDetailsViewModel.getMovieReviewsList().observe(this, new Observer< ArrayList< MovieReview > >() {
-            @Override
-            public void onChanged(ArrayList< MovieReview > movieReviews) {
-                movieReviewsAdapter.addAll(movieReviews);
-            }
-        });
+        movieDetailsViewModel.getMovieReviewsList().observe(this, movieReviews -> movieReviewsAdapter.addAll(movieReviews));
         ////
 
 
+        // Movie Trailers Section
+        movieTrailersAdapter.setOnMovieTrailerClickListener(movieDetailsViewModel);
         initRecyclerView(activityMovieInformationBinding.rvMovieTrailers,movieTrailersAdapter,RecyclerView.HORIZONTAL);
-
-        movieDetailsViewModel.getMovieTrailersList().observe(this, new Observer< ArrayList< MovieTrailer > >() {
-            @Override
-            public void onChanged(ArrayList< MovieTrailer > movieTrailers) {
-                movieTrailersAdapter.addAll(movieTrailers);
-            }
-        });
+        movieDetailsViewModel.getMovieTrailersList().observe(this, movieTrailers -> movieTrailersAdapter.addAll(movieTrailers));
         ////
     }
 

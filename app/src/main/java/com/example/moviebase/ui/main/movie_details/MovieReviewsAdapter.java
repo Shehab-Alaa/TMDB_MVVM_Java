@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ItemMovieReviewBinding;
 import com.example.moviebase.data.model.MovieReview;
+import com.example.moviebase.ui.base.BaseViewHolder;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapter.MovieReviewVHolder>{
+public class MovieReviewsAdapter extends RecyclerView.Adapter< BaseViewHolder >{
 
     private ArrayList<MovieReview> movieReviews;
 
@@ -23,7 +24,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
 
     @NonNull
     @Override
-    public MovieReviewVHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemMovieReviewBinding itemMovieReviewBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()), R.layout.item_movie_review,parent ,false
         );
@@ -31,8 +32,8 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
     }
 
     @Override
-    public void onBindViewHolder(MovieReviewVHolder movieReviewVHolder, int position) {
-        movieReviewVHolder.onBind(movieReviews.get(position));
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBind(position);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
         notifyDataSetChanged();
     }
 
-    class MovieReviewVHolder extends RecyclerView.ViewHolder {
+    class MovieReviewVHolder extends BaseViewHolder {
 
         ItemMovieReviewBinding itemMovieReviewBinding;
 
@@ -54,8 +55,9 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
             this.itemMovieReviewBinding = itemMovieReviewBinding;
         }
 
-        public void onBind(MovieReview movieReview){
-            itemMovieReviewBinding.setMovieReview(movieReview);
+        @Override
+        public void onBind(int position) {
+            itemMovieReviewBinding.setMovieReview(movieReviews.get(position));
         }
     }
 }
