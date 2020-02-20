@@ -5,6 +5,8 @@ import com.example.moviebase.data.model.MovieDetails;
 import com.example.moviebase.data.model.api.MovieReviewResponse;
 import com.example.moviebase.data.model.api.MovieVideosResponse;
 import com.example.moviebase.data.remote.client.ApiClient;
+import com.example.moviebase.data.remote.client.ApiService;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

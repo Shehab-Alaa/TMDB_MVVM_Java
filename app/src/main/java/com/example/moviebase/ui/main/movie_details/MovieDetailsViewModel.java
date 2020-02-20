@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.moviebase.R;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClickListener;
 import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.api.DataResponse;
@@ -188,7 +189,7 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
     @Override
     public void onMovieItemClick(View itemView, Movie movie) {
         Intent intent = new Intent(itemView.getContext() , MovieDetailsActivity.class);
-        intent.putExtra("SelectedMovie" , movie);
+        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
 
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
@@ -228,8 +229,8 @@ public class MovieDetailsViewModel extends ViewModel implements OnMovieItemClick
     }
 
     private void openYoutubeApp(View view ,String videoId){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_APP_LINK + videoId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_WEB_LINK + videoId));
         try {
             view.getContext().startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {

@@ -5,13 +5,15 @@ import android.content.Context;
 
 import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.data.remote.ApiHelper;
-import com.example.moviebase.data.remote.ApiService;
+import com.example.moviebase.data.remote.client.ApiService;
 import com.example.moviebase.data.remote.AppApiHelper;
 import com.example.moviebase.data.local.db.AppDatabase;
 import com.example.moviebase.data.local.db.AppDbHelper;
 import com.example.moviebase.data.local.db.DbHelper;
 import com.example.moviebase.data.DataRepoHelper;
 import com.example.moviebase.data.DataRepository;
+import com.example.moviebase.di.DatabaseInfo;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.NetworkUtils;
 
 import java.io.IOException;
@@ -76,26 +78,22 @@ public class AppModule {
     @Provides
     @Singleton
     static Interceptor provideInterceptor(final Context context) {
-        Interceptor interceptor = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
+        return chain -> {
+            Request request = chain.request();
 
-                if (!NetworkUtils.isNetworkAvailable(context)) {
-                    int maxStale = 60 * 60 * 24 * 28; // 4-weeks-stale
-                    request = request.newBuilder()
-                            .header("Cache-Control", "public, only-if-cached, max-stale" + maxStale)
-                            .build();
-                } else {
-                    int maxAge = 5; // fresh data
-                    request = request.newBuilder()
-                            .header("Cache-Control", "public, max-age = " + maxAge)
-                            .build();
-                }
-                return chain.proceed(request);
+            if (!NetworkUtils.isNetworkAvailable(context)) {
+                int maxStale = 60 * 60 * 24 * 28; // 4-weeks-stale
+                request = request.newBuilder()
+                        .header("Cache-Control", "public, only-if-cached, max-stale" + maxStale)
+                        .build();
+            } else {
+                int maxAge = 5; // fresh data
+                request = request.newBuilder()
+                        .header("Cache-Control", "public, max-age = " + maxAge)
+                        .build();
             }
+            return chain.proceed(request);
         };
-        return interceptor;
     }
 
     @Provides
@@ -114,9 +112,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static AppDatabase provideFavoriteMoviesRoomDB(Context context){
-        return Room.databaseBuilder(context , AppDatabase.class , "FavoriteMovies")
+    static AppDatabase provideFavoriteMoviesRoomDB(Context context , @DatabaseInfo String databaseName){
+        return Room.databaseBuilder(context , AppDatabase.class , databaseName)
                 .allowMainThreadQueries().build();
+    }
+
+    @Provides
+    @DatabaseInfo
+    static String provideDatabaseName(){
+        return AppConstants.DATABASE_NAME;
     }
 
     @Provides

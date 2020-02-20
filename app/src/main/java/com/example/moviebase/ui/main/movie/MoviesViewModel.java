@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.moviebase.R;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.Movie;
@@ -78,7 +79,7 @@ public class MoviesViewModel extends ViewModel implements OnMovieItemClickListen
     @Override
     public void onMovieItemClick(View itemView, Movie movie) {
         Intent intent = new Intent(itemView.getContext() , MovieDetailsActivity.class);
-        intent.putExtra("SelectedMovie" , movie);
+        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
 
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());

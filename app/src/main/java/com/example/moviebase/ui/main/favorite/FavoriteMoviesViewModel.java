@@ -9,6 +9,7 @@ import com.example.moviebase.R;
 import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class FavoriteMoviesViewModel extends ViewModel implements OnMovieItemCli
     @Override
     public void onMovieItemClick(View itemView, Movie movie) {
         Intent intent = new Intent(itemView.getContext() , MovieDetailsActivity.class);
-        intent.putExtra("SelectedMovie" , movie);
+        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
 
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());

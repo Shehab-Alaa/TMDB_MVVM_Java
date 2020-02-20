@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.moviebase.R;
 import com.example.moviebase.ui.main.favorite.FavoriteMoviesFragment;
 import com.example.moviebase.ui.main.movie.MoviesFragment;
+import com.example.moviebase.utils.AppConstants;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -21,13 +22,7 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private final String NOW_PLAYING = "now_playing";
-    private final String POPULAR = "popular";
-    private final String TOP_RATED = "top_rated";
-    private final String UPCOMING = "upcoming";
-    private final String FAVORITE = "favorite";
     private Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +33,13 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
 
         if (savedInstanceState == null)
         {
-            openFragment(NOW_PLAYING);
+            openFragment(AppConstants.NOW_PLAYING);
             navigationView.setCheckedItem(R.id.nowPlayingMoviesItem);
         }
     }
 
     public void initUI(){
+        // TODO :: findViewByID;
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -74,23 +70,23 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         {
             case R.id.nowPlayingMoviesItem:
                 toolbar.setTitle("Now Playing Movies");
-                openFragment(NOW_PLAYING);
+                openFragment(AppConstants.NOW_PLAYING);
                 break;
             case R.id.popularMoviesItem:
                 toolbar.setTitle("Popular Movies");
-                openFragment(POPULAR);
+                openFragment(AppConstants.POPULAR);
                 break;
             case R.id.topRatedMoviesItem:
                 toolbar.setTitle("Top Rated Movies");
-                openFragment(TOP_RATED);
+                openFragment(AppConstants.TOP_RATED);
                 break;
             case R.id.upcomingMoviesItem:
                 toolbar.setTitle("Upcoming Movies");
-                openFragment(UPCOMING);
+                openFragment(AppConstants.UPCOMING);
                 break;
             case R.id.favoriteMoviesItem:
                 toolbar.setTitle("Favorite Movies");
-                openFragment(FAVORITE);
+                openFragment(AppConstants.FAVORITE);
                 break;
         }
 
@@ -108,7 +104,7 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         else{
             fragment = new MoviesFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("category" , category);
+            bundle.putString(AppConstants.SELECTED_CATEGORY , category);
             fragment.setArguments(bundle);
         }
 

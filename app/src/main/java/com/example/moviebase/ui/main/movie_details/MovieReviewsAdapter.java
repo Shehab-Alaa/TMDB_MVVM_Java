@@ -48,6 +48,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter< BaseViewHolder >{
 
     class MovieReviewVHolder extends BaseViewHolder {
 
+        //TODO :: Data Binding set adapter w bet3mlo b3d;
         ItemMovieReviewBinding itemMovieReviewBinding;
 
         public MovieReviewVHolder(ItemMovieReviewBinding itemMovieReviewBinding) {

@@ -10,6 +10,7 @@ import android.view.animation.LayoutAnimationController;
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.FragmentMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
@@ -44,7 +45,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         super.onCreate(savedInstanceState);
 
         assert getArguments() != null;
-        category = getArguments().getString("category"); // request API to get all movies in this Category
+        category = getArguments().getString(AppConstants.SELECTED_CATEGORY); // request API to get all movies in this Category
 
         moviesAdapter.setOnMovieItemClickListener(moviesViewModel);
     }
@@ -118,6 +119,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
 
     private void observeMoviesListData(){
         moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , movies -> {
+            // TODO:: Data binding.
             if (movies != null){
                 updateMoviesList(movies);
             }else{
@@ -127,6 +129,8 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     }
 
     private void updateMoviesList(List<Movie> movies){
+        //TODO:: observe is Loading ,,
+        //TODO:: app constants
         moviesBinding.progressBar.setVisibility(View.INVISIBLE);
         moviesAdapter.addAll((ArrayList< Movie >) movies);
     }

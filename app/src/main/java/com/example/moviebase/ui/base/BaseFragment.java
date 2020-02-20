@@ -24,6 +24,7 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+        // TODO:: Base View Model;
     }
 
     @Override

@@ -9,12 +9,12 @@ import com.example.moviebase.R;
 import com.example.moviebase.ui.main.movie.MoviesAdapter;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.data.model.Movie;
+import com.example.moviebase.utils.AppConstants;
 
 import javax.inject.Inject;
 
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,13 +42,12 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_information);
 
         // Binding Class
         activityMovieInformationBinding = DataBindingUtil.setContentView(this ,R.layout.activity_movie_information);
         activityMovieInformationBinding.setLifecycleOwner(this);
 
-        movie = (Movie) getIntent().getSerializableExtra("SelectedMovie");
+        movie = (Movie) getIntent().getSerializableExtra(AppConstants.SELECTED_MOVIE);
         activityMovieInformationBinding.setMovie(movie);
 
         movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
