@@ -13,12 +13,12 @@ import javax.inject.Singleton;
 import io.reactivex.Single;
 
 @Singleton
-public class AppApiHelper implements ApiHelper {
+public class ApiRepository implements ApiDataSource {
 
     private ApiService apiService;
 
     @Inject
-    public AppApiHelper(ApiService apiService){
+    public ApiRepository(ApiService apiService){
         this.apiService = apiService;
     }
 

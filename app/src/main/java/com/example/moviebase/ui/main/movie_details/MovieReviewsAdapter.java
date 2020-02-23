@@ -6,20 +6,19 @@ import android.view.ViewGroup;
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ItemMovieReviewBinding;
 import com.example.moviebase.data.model.MovieReview;
+import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieReviewsAdapter extends RecyclerView.Adapter< BaseViewHolder >{
+public class MovieReviewsAdapter extends BaseRecyclerViewAdapter<MovieReview> {
 
-    private ArrayList<MovieReview> movieReviews;
 
-    public MovieReviewsAdapter(ArrayList<MovieReview> movieReviews) {
-        this.movieReviews = movieReviews;
+    public MovieReviewsAdapter(List< MovieReview > items) {
+        super(items);
     }
 
     @NonNull
@@ -29,21 +28,6 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter< BaseViewHolder >{
                 LayoutInflater.from(parent.getContext()), R.layout.item_movie_review,parent ,false
         );
         return new MovieReviewVHolder(itemMovieReviewBinding);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.onBind(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return movieReviews.size();
-    }
-
-    public void addAll(ArrayList<MovieReview> movieReviews){
-        this.movieReviews.addAll(movieReviews);
-        notifyDataSetChanged();
     }
 
     class MovieReviewVHolder extends BaseViewHolder {
@@ -58,7 +42,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter< BaseViewHolder >{
 
         @Override
         public void onBind(int position) {
-            itemMovieReviewBinding.setMovieReview(movieReviews.get(position));
+            itemMovieReviewBinding.setMovieReview(getItems().get(position));
         }
     }
 }

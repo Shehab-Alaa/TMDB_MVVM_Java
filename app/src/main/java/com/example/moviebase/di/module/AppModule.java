@@ -3,20 +3,18 @@ package com.example.moviebase.di.module;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.moviebase.data.remote.client.ApiClient;
-import com.example.moviebase.data.remote.ApiHelper;
-import com.example.moviebase.data.remote.client.ApiService;
-import com.example.moviebase.data.remote.AppApiHelper;
-import com.example.moviebase.data.local.db.AppDatabase;
-import com.example.moviebase.data.local.db.AppDbHelper;
-import com.example.moviebase.data.local.db.DbHelper;
 import com.example.moviebase.data.DataRepoHelper;
+import com.example.moviebase.data.local.db.DbDataSource;
+import com.example.moviebase.data.remote.ApiDataSource;
+import com.example.moviebase.data.remote.ApiRepository;
+import com.example.moviebase.data.remote.client.ApiClient;
+import com.example.moviebase.data.remote.client.ApiService;
+import com.example.moviebase.data.local.db.AppDatabase;
+import com.example.moviebase.data.local.db.DatabaseRepository;
 import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.di.DatabaseInfo;
 import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.NetworkUtils;
-
-import java.io.IOException;
 
 import javax.inject.Singleton;
 
@@ -27,7 +25,6 @@ import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -37,7 +34,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static ApiHelper provideApiHelper(AppApiHelper appApiHelper){
+    static ApiDataSource provideApiHelper(ApiRepository appApiHelper){
         return appApiHelper;
     }
 
@@ -125,7 +122,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    static DbHelper provideAppDbHelper(AppDbHelper appDbHelper){
+    static DbDataSource provideAppDbHelper(DatabaseRepository appDbHelper){
         return appDbHelper;
     }
 }

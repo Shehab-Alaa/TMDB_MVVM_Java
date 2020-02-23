@@ -6,24 +6,20 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
+import com.example.moviebase.ui.base.BaseActivity;
 import com.example.moviebase.ui.main.movie.MoviesAdapter;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.AppConstants;
-
 import javax.inject.Inject;
 
 import androidx.annotation.RequiresApi;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import dagger.android.support.DaggerAppCompatActivity;
 
-public class MovieDetailsActivity extends DaggerAppCompatActivity {
+public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationBinding,MovieDetailsViewModel> {
 
-    private MovieDetailsViewModel movieDetailsViewModel;
-    private ActivityMovieInformationBinding activityMovieInformationBinding;
     private Movie movie;
 
     @Inject
@@ -43,20 +39,15 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Binding Class
-        activityMovieInformationBinding = DataBindingUtil.setContentView(this ,R.layout.activity_movie_information);
-        activityMovieInformationBinding.setLifecycleOwner(this);
-
         movie = (Movie) getIntent().getSerializableExtra(AppConstants.SELECTED_MOVIE);
-        activityMovieInformationBinding.setMovie(movie);
+        getViewDataBinding().setMovie(movie);
 
-        movieDetailsViewModel = new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
-        movieDetailsViewModel.checkFavoriteMovies(movie.getId()); // to set UI and observe favorite logic
+        getViewModel().checkFavoriteMovies(movie.getId()); // to set UI and observe favorite logic
 
-        activityMovieInformationBinding.setEventHandler(movieDetailsViewModel);
+        getViewDataBinding().setEventHandler(getViewModel());
 
-        activityMovieInformationBinding.collapsingToolbar.setTitleEnabled(true);
-        activityMovieInformationBinding.collapsingToolbar.setTitle(movie.getTitle());
+        getViewDataBinding().collapsingToolbar.setTitleEnabled(true);
+        getViewDataBinding().collapsingToolbar.setTitle(movie.getTitle());
 
         setLayoutAnimation();
 
@@ -68,66 +59,76 @@ public class MovieDetailsActivity extends DaggerAppCompatActivity {
         ///
 
         // Favorite FAB
-        movieDetailsViewModel.getIsFavorite().observe(this, isFavorite -> {
+        getViewModel().getIsFavorite().observe(this, isFavorite -> {
             if (isFavorite){
-                activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_favorite);
+                getViewDataBinding().fabFavorite.setImageResource(R.drawable.ic_favorite);
             }
             else{
-                activityMovieInformationBinding.fabFavorite.setImageResource(R.drawable.ic_un_favorite);
+                getViewDataBinding().fabFavorite.setImageResource(R.drawable.ic_un_favorite);
             }
         });
         //
 
         // Movie Details Section
-        movieDetailsViewModel.getMovieDetails().observe(this, movieDetails -> activityMovieInformationBinding.setMovieDetails(movieDetails));
+        getViewModel().getMovieDetails().observe(this, movieDetails -> getViewDataBinding().setMovieDetails(movieDetails));
         ////
 
         // Similar Movies Section
-        similarMoviesAdapter.setOnMovieItemClickListener(movieDetailsViewModel);
-        initRecyclerView(activityMovieInformationBinding.rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
-        movieDetailsViewModel.getSimilarMoviesList().observe(this, movies -> similarMoviesAdapter.addAll(movies));
+        similarMoviesAdapter.setOnMovieItemClickListener(getViewModel());
+        initRecyclerView(getViewDataBinding().rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
+        getViewModel().getMoviesList().observe(this, movies -> similarMoviesAdapter.addItems(movies));
         /////
 
         // Movie Reviews Section
-        initRecyclerView(activityMovieInformationBinding.rvMovieReviews , movieReviewsAdapter , RecyclerView.VERTICAL);
-        movieDetailsViewModel.getMovieReviewsList().observe(this, movieReviews -> movieReviewsAdapter.addAll(movieReviews));
+        initRecyclerView(getViewDataBinding().rvMovieReviews , movieReviewsAdapter , RecyclerView.VERTICAL);
+        getViewModel().getMovieReviewsList().observe(this, movieReviews -> movieReviewsAdapter.addItems(movieReviews));
         ////
 
 
         // Movie Trailers Section
-        movieTrailersAdapter.setOnMovieTrailerClickListener(movieDetailsViewModel);
-        initRecyclerView(activityMovieInformationBinding.rvMovieTrailers,movieTrailersAdapter,RecyclerView.HORIZONTAL);
-        movieDetailsViewModel.getMovieTrailersList().observe(this, movieTrailers -> movieTrailersAdapter.addAll(movieTrailers));
+        movieTrailersAdapter.setOnMovieTrailerClickListener(getViewModel());
+        initRecyclerView(getViewDataBinding().rvMovieTrailers,movieTrailersAdapter,RecyclerView.HORIZONTAL);
+        getViewModel().getMovieTrailersList().observe(this, movieTrailers -> movieTrailersAdapter.addItems(movieTrailers));
         ////
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_movie_information;
+    }
+
+    @Override
+    public MovieDetailsViewModel initViewModel() {
+        return new ViewModelProvider(this , viewModelFactory).get(MovieDetailsViewModel.class);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setLayoutAnimation(){
 
         LayoutAnimationController rightAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_slide_right);
-        activityMovieInformationBinding.movieDetailsLayout.setLayoutAnimation(rightAnimationController);
+        getViewDataBinding().movieDetailsLayout.setLayoutAnimation(rightAnimationController);
 
         LayoutAnimationController bottomAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_from_bottom);
-        activityMovieInformationBinding.movieOverviewLayout.setLayoutAnimation(bottomAnimationController);
+        getViewDataBinding().movieOverviewLayout.setLayoutAnimation(bottomAnimationController);
 
         // Shard Element Movie Poster
-        activityMovieInformationBinding.moviePoster.setTransitionName(movie.getId().toString());
+        getViewDataBinding().moviePoster.setTransitionName(movie.getId().toString());
     }
 
     private void getMovieDetailsApiCall(int movieID){
-        movieDetailsViewModel.getMovieDetailsData(movieID);
+        getViewModel().getMovieDetailsData(movieID);
     }
 
     private void getSimilarMoviesApiCall(int movieID , int page){
-        movieDetailsViewModel.getSimilarMoviesListData(movieID , page);
+        getViewModel().getSimilarMoviesListData(movieID , page);
     }
 
     private void getMovieTrailersApiCall(int movieID){
-        movieDetailsViewModel.getMovieTrailersListData(movieID);
+        getViewModel().getMovieTrailersListData(movieID);
     }
 
     private void getMovieReviewsApiCall(int movieID , int page){
-        movieDetailsViewModel.getMovieReviewsListData(movieID , page);
+        getViewModel().getMovieReviewsListData(movieID , page);
     }
 
     private void initRecyclerView(RecyclerView recyclerView , RecyclerView.Adapter adapter , int orientation)

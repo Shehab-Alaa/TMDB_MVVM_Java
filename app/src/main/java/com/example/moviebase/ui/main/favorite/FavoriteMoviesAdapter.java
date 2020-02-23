@@ -7,32 +7,26 @@ import android.view.ViewGroup;
 import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.ItemFavoriteMovieBinding;
+import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
 import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class FavoriteMoviesAdapter extends RecyclerView.Adapter<BaseViewHolder > {
+public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
 
-    private ArrayList< Movie > favoriteMoviesList;
     private OnMovieItemClickListener onMovieItemClick;
 
-    public FavoriteMoviesAdapter(ArrayList<Movie> movies){
-        this.favoriteMoviesList = movies;
+    public FavoriteMoviesAdapter(List< Movie > items) {
+        super(items);
     }
 
     public void setOnMovieItemClickListener(OnMovieItemClickListener onMovieItemClick) {
         this.onMovieItemClick = onMovieItemClick;
-    }
-
-    public void addAll(ArrayList< Movie > favoriteMoviesList){
-        this.favoriteMoviesList.addAll(favoriteMoviesList);
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -42,16 +36,6 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<BaseViewHolder >
                 LayoutInflater.from(parent.getContext()), R.layout.item_favorite_movie,parent ,false
         );
         return new MoviesViewHolder(itemFavoriteMovieBinding);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.onBind(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return favoriteMoviesList.size();
     }
 
     public class MoviesViewHolder extends BaseViewHolder implements ProgressBarHandler {
@@ -67,7 +51,7 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<BaseViewHolder >
 
         @Override
         public void onBind(int position) {
-            itemFavoriteMovieBinding.setMovie(favoriteMoviesList.get(position));
+            itemFavoriteMovieBinding.setMovie(getItems().get(position));
         }
 
         @Override

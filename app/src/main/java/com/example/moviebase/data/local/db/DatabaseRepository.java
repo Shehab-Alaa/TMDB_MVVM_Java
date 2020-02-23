@@ -10,17 +10,16 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 
 @Singleton
-public class AppDbHelper implements DbHelper {
+public class DatabaseRepository implements DbDataSource {
 
     private AppDatabase appDatabase;
 
     @Inject
-    public AppDbHelper(AppDatabase appDatabase){
+    public DatabaseRepository(AppDatabase appDatabase){
         this.appDatabase = appDatabase;
     }
 

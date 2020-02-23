@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-public interface DbHelper {
+public interface DbDataSource {
     void addFavoriteMovie(Movie movie);
     LiveData< List<Movie> > getFavoriteMovies();
     void removeFavoriteMovie(long movieID);

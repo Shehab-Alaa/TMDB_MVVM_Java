@@ -15,25 +15,24 @@ import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewModel> extends DaggerFragment {
 
-    protected View mRootView;
-    protected Context context;
-    protected T mViewDataBinding;
-    protected V mViewModel;
+    private View mRootView;
+    private Context context;
+    private T mViewDataBinding;
+    private V mViewModel;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
-        // TODO:: Base View Model;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = getViewModel();
+        mViewModel = initViewModel();
     }
 
-    public abstract V getViewModel();
+    public abstract V initViewModel();
 
     @Nullable
     @Override
@@ -51,7 +50,21 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
         mViewDataBinding.setLifecycleOwner(this);
     }
 
+    public View getRootView() {
+        return mRootView;
+    }
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
     public T getViewDataBinding(){
         return mViewDataBinding;
+    }
+
+    public V getViewModel(){
+        return mViewModel;
     }
 }

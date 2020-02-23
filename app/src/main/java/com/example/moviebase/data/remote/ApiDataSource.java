@@ -7,7 +7,7 @@ import com.example.moviebase.data.model.api.MovieVideosResponse;
 
 import io.reactivex.Single;
 
-public interface ApiHelper {
+public interface ApiDataSource {
     Single< DataResponse > getMoviesList(String category , int page);
     Single< MovieDetails > getMovieDetailsData(int movieID);
     Single<DataResponse> getSimilarMoviesListData(int movieID , int page);

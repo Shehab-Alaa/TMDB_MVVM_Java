@@ -15,7 +15,6 @@ import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,9 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesViewModel> {
 
-    private MoviesViewModel moviesViewModel;
     private String category;
-    private FragmentMoviesBinding moviesBinding;
     private GridLayoutManager gridLayoutManager;
     private int totalMoviesPages;
 
@@ -47,14 +44,12 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         assert getArguments() != null;
         category = getArguments().getString(AppConstants.SELECTED_CATEGORY); // request API to get all movies in this Category
 
-        moviesAdapter.setOnMovieItemClickListener(moviesViewModel);
+        moviesAdapter.setOnMovieItemClickListener(getViewModel());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        moviesBinding = getViewDataBinding();
 
         checkScreenOrientation();
         getMoviesDataApiCall(1);
@@ -64,9 +59,8 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     }
 
     @Override
-    public MoviesViewModel getViewModel() {
-        moviesViewModel = new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
-        return moviesViewModel;
+    public MoviesViewModel initViewModel() {
+        return new ViewModelProvider(this , viewModelFactory).get(MoviesViewModel.class);
     }
 
     @Override
@@ -88,21 +82,21 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     private void initMoviesRecyclerView(int spanCount , int spacing)
     {
         gridLayoutManager = new GridLayoutManager(getActivity() , spanCount);
-        moviesBinding.moviesRv.setLayoutManager(gridLayoutManager);
-        moviesBinding.moviesRv.setHasFixedSize(true);
+        getViewDataBinding().moviesRv.setLayoutManager(gridLayoutManager);
+        getViewDataBinding().moviesRv.setHasFixedSize(true);
         // set Animation to all children (items) of this Layout
         int animID = R.anim.layout_animation_fall_down;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(context, animID);
-        moviesBinding.moviesRv.setLayoutAnimation(animation);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), animID);
+        getViewDataBinding().moviesRv.setLayoutAnimation(animation);
         // equal spaces between grid items
         boolean includeEdge = true;
-        moviesBinding.moviesRv.addItemDecoration(new GridSpacingItemDecorationUtils(spanCount, spacing, includeEdge));
-        moviesBinding.moviesRv.setAdapter(moviesAdapter);
+        getViewDataBinding().moviesRv.addItemDecoration(new GridSpacingItemDecorationUtils(spanCount, spacing, includeEdge));
+        getViewDataBinding().moviesRv.setAdapter(moviesAdapter);
     }
 
     private void observeTotalMoviesPages(){
         totalMoviesPages = 1;
-        moviesViewModel.getTotalMoviesPages().observe(getViewLifecycleOwner(), pages -> totalMoviesPages = pages);
+        getViewModel().getTotalMoviesPages().observe(getViewLifecycleOwner(), pages -> totalMoviesPages = pages);
     }
 
     private void setupEndlessRecyclerView(){
@@ -114,11 +108,11 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
                 }
             }
         };
-        moviesBinding.moviesRv.addOnScrollListener(rvScrollListenerUtils);
+        getViewDataBinding().moviesRv.addOnScrollListener(rvScrollListenerUtils);
     }
 
     private void observeMoviesListData(){
-        moviesViewModel.getMoviesList().observe(getViewLifecycleOwner() , movies -> {
+        getViewModel().getMoviesList().observe(getViewLifecycleOwner() , movies -> {
             // TODO:: Data binding.
             if (movies != null){
                 updateMoviesList(movies);
@@ -130,14 +124,13 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
 
     private void updateMoviesList(List<Movie> movies){
         //TODO:: observe is Loading ,,
-        //TODO:: app constants
-        moviesBinding.progressBar.setVisibility(View.INVISIBLE);
-        moviesAdapter.addAll((ArrayList< Movie >) movies);
+        getViewDataBinding().progressBar.setVisibility(View.INVISIBLE);
+        moviesAdapter.addItems(movies);
     }
 
     private void getMoviesDataApiCall(int page){
-        moviesBinding.progressBar.setVisibility(View.VISIBLE);
-        moviesViewModel.getMoviesListApiCall(category,page);
+        getViewDataBinding().progressBar.setVisibility(View.VISIBLE);
+        getViewModel().getMoviesListApiCall(category,page);
     }
 
 }

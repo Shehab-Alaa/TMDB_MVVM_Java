@@ -6,24 +6,23 @@ import android.view.ViewGroup;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ItemMovieBinding;
+import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
 import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class MoviesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
 
-    private ArrayList<Movie> movies;
     private OnMovieItemClickListener onMovieItemClick;
 
-    public MoviesAdapter(ArrayList<Movie> movies){
-        this.movies = movies;
+    public MoviesAdapter(List< Movie > items) {
+        super(items);
     }
 
     public void setOnMovieItemClickListener(OnMovieItemClickListener onMovieItemClick) {
@@ -39,22 +38,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return new MoviesViewHolder(itemMovieBinding);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-        holder.onBind(position);
-    }
-
-    public void addAll(ArrayList<Movie> movies){
-        this.movies.addAll(movies);
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemCount() {
-        return movies.size();
-    }
-
-
     public class MoviesViewHolder extends BaseViewHolder implements ProgressBarHandler  {
 
         ItemMovieBinding itemMovieBinding;
@@ -68,7 +51,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onBind(int position) {
-            itemMovieBinding.setMovie(movies.get(position));
+            itemMovieBinding.setMovie(getItems().get(position));
         }
 
         @Override

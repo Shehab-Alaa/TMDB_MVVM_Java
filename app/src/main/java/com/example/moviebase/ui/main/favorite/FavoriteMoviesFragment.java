@@ -12,7 +12,6 @@ import com.example.moviebase.databinding.FragmentFavoriteMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,9 +23,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesBinding,FavoriteMoviesViewModel> {
 
-    private FavoriteMoviesViewModel favoriteMoviesViewModel;
-    private FragmentFavoriteMoviesBinding favoriteMoviesBinding;
-
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -34,26 +30,23 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     FavoriteMoviesAdapter favoriteMoviesAdapter;
 
     @Override
-    public FavoriteMoviesViewModel getViewModel() {
-        favoriteMoviesViewModel = new ViewModelProvider(this , viewModelFactory).get(FavoriteMoviesViewModel.class);
-        return favoriteMoviesViewModel;
+    public FavoriteMoviesViewModel initViewModel() {
+        return new ViewModelProvider(this , viewModelFactory).get(FavoriteMoviesViewModel.class);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        favoriteMoviesAdapter.setOnMovieItemClickListener(favoriteMoviesViewModel);
+        favoriteMoviesAdapter.setOnMovieItemClickListener(getViewModel());
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        favoriteMoviesBinding = getViewDataBinding();
-        favoriteMoviesBinding.progressBar.setVisibility(View.VISIBLE);
+        getViewDataBinding().progressBar.setVisibility(View.VISIBLE);
 
         checkScreenOrientation();
-        getFavoriteMovies();
         observeFavoriteMoviesListData();
     }
 
@@ -76,28 +69,24 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     private void initMoviesRecyclerView(int spanCount , int spacing)
     {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity() , spanCount);
-        favoriteMoviesBinding.favoriteMoviesRv.setLayoutManager(gridLayoutManager);
-        favoriteMoviesBinding.favoriteMoviesRv.setHasFixedSize(true);
+        getViewDataBinding().favoriteMoviesRv.setLayoutManager(gridLayoutManager);
+        getViewDataBinding().favoriteMoviesRv.setHasFixedSize(true);
         // set Animation to all children (items) of this Layout
         int animID = R.anim.layout_animation_fall_down;
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(context, animID);
-        favoriteMoviesBinding.favoriteMoviesRv.setLayoutAnimation(animation);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), animID);
+        getViewDataBinding().favoriteMoviesRv.setLayoutAnimation(animation);
         // equal spaces between grid items
         boolean includeEdge = true;
-        favoriteMoviesBinding.favoriteMoviesRv.addItemDecoration(new GridSpacingItemDecorationUtils(spanCount, spacing, includeEdge));
-        favoriteMoviesBinding.favoriteMoviesRv.setAdapter(favoriteMoviesAdapter);
-    }
-
-    private void getFavoriteMovies(){
-        favoriteMoviesViewModel.getFavoriteMoviesList();
+        getViewDataBinding().favoriteMoviesRv.addItemDecoration(new GridSpacingItemDecorationUtils(spanCount, spacing, includeEdge));
+        getViewDataBinding().favoriteMoviesRv.setAdapter(favoriteMoviesAdapter);
     }
 
     private void observeFavoriteMoviesListData(){
-        favoriteMoviesViewModel.getFavoriteMoviesList().observe(getViewLifecycleOwner(), movies -> updateMoviesList(movies));
+        getViewModel().getFavoriteMoviesList().observe(getViewLifecycleOwner(), movies -> updateMoviesList(movies));
     }
 
     private void updateMoviesList(List<Movie> movies){
-        favoriteMoviesBinding.progressBar.setVisibility(View.INVISIBLE);
-        favoriteMoviesAdapter.addAll((ArrayList< Movie >) movies);
+        getViewDataBinding().progressBar.setVisibility(View.INVISIBLE);
+        favoriteMoviesAdapter.addItems(movies);
     }
 }
