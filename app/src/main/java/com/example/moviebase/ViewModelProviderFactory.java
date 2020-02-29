@@ -11,7 +11,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 @Singleton
-public class ViewModelProviderFactory implements ViewModelProvider.Factory {
+public class
+ViewModelProviderFactory implements ViewModelProvider.Factory {
 
     private final Map<Class<? extends ViewModel>, Provider< ViewModel > > creators;
 

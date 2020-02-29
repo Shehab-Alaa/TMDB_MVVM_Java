@@ -1,12 +1,12 @@
 package com.example.moviebase.ui.main.movie;
 
-
 import android.util.Log;
 
 import com.example.moviebase.data.model.api.DataResponse;
 
 import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.ui.base.MoviesBaseViewModel;
+import com.example.moviebase.utils.AppConstants;
 
 import javax.inject.Inject;
 
@@ -23,14 +23,13 @@ public class MoviesViewModel extends MoviesBaseViewModel {
     @Inject
     public MoviesViewModel(DataRepository dataRepository){
         super(dataRepository);
+        Log.i("Here","Create New Movies View Model");
         totalMoviesPages = new MutableLiveData<>();
     }
 
-    public MutableLiveData< Integer > getTotalMoviesPages() {
-        return totalMoviesPages;
-    }
-
     public void getMoviesListApiCall(String category , int page){
+         Log.i("Here", "Category " + category);
+         setIsLoading(true);
          getDataRepository().getApiRepository().getMoviesList(category,page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -43,12 +42,18 @@ public class MoviesViewModel extends MoviesBaseViewModel {
                     public void onSuccess(DataResponse dataResponse) {
                         getMoviesList().setValue(dataResponse.getMovies());
                         totalMoviesPages.setValue(dataResponse.getTotalPages());
+                        setIsLoading(false);
                     }
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("Here" , "Observe " +  e.getMessage());
+                        setIsLoading(false);
                     }
              });
     }
+
+    public MutableLiveData< Integer > getTotalMoviesPages() {
+        return totalMoviesPages;
+    }
+
 
 }

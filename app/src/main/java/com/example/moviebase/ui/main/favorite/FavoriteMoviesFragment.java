@@ -1,18 +1,20 @@
 package com.example.moviebase.ui.main.favorite;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
+import com.example.moviebase.BR;
 import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.FragmentFavoriteMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
+import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,7 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesBinding,FavoriteMoviesViewModel> {
+public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesBinding,FavoriteMoviesViewModel>
+        implements FavoriteMoviesAdapter.FavoritesAdapterListener
+{
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -37,17 +41,19 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        favoriteMoviesAdapter.setOnMovieItemClickListener(getViewModel());
+        favoriteMoviesAdapter.setListener(this);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getViewDataBinding().progressBar.setVisibility(View.VISIBLE);
-
         checkScreenOrientation();
-        observeFavoriteMoviesListData();
+    }
+
+    @Override
+    public int getBindingVariable() {
+        return BR.favoriteMoviesViewModel;
     }
 
     @Override
@@ -81,12 +87,18 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
         getViewDataBinding().favoriteMoviesRv.setAdapter(favoriteMoviesAdapter);
     }
 
-    private void observeFavoriteMoviesListData(){
-        getViewModel().getFavoriteMoviesList().observe(getViewLifecycleOwner(), movies -> updateMoviesList(movies));
-    }
-
-    private void updateMoviesList(List<Movie> movies){
-        getViewDataBinding().progressBar.setVisibility(View.INVISIBLE);
-        favoriteMoviesAdapter.addItems(movies);
+    @Override
+    public void onItemClick(Movie movie) {
+        Intent intent = new Intent(getContext() , MovieDetailsActivity.class);
+        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
+        startActivity(intent);
+        /*// set dynamic transition name by MovieID
+        itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
+        // need to share MoviePoster between this Activity And MovieInformation
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation((Activity) itemView.getContext(),
+                        itemView.findViewById(R.id.movie_poster),
+                        Objects.requireNonNull(ViewCompat.getTransitionName(itemView.findViewById(R.id.movie_poster))));
+        itemView.getContext().startActivity(intent , options.toBundle());*/
     }
 }

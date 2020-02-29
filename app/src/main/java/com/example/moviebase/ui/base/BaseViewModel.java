@@ -18,15 +18,27 @@ import java.util.Objects;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public abstract class BaseViewModel extends ViewModel implements OnMovieItemClickListener {
 
     // TODO:: BaseActivity;
     private DataRepository dataRepository;
+    private MutableLiveData<Boolean> isLoading;
 
     public BaseViewModel(DataRepository dataRepository){
         this.dataRepository = dataRepository;
+        isLoading = new MutableLiveData<>(true);
+    }
+
+    public MutableLiveData< Boolean> getIsLoading() {
+        return isLoading;
+    }
+
+    public void setIsLoading(boolean isLoading) {
+        this.isLoading.setValue(isLoading);
     }
 
     // TODO :: BaseViewModel Not Depend on this onClick;

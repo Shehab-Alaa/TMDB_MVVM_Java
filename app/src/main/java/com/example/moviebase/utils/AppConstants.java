@@ -15,4 +15,8 @@ public class AppConstants {
 
     public static final String YOUTUBE_WEB_LINK = "http://www.youtube.com/watch?v=";
     public static final String YOUTUBE_APP_LINK = "vnd.youtube:";
+
+
+    public static final int VIEW_TYPE_EMPTY = 0;
+    public static final int VIEW_TYPE_NORMAL = 1;
 }

@@ -35,7 +35,4 @@ public class MoviesBaseViewModel extends BaseViewModel {
         return moviesList;
     }
 
-    public CompositeDisposable getCompositeDisposable() {
-        return compositeDisposable;
-    }
 }

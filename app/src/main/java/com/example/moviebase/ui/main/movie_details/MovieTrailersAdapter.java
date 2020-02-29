@@ -27,6 +27,11 @@ public class MovieTrailersAdapter  extends BaseRecyclerViewAdapter<MovieTrailer>
         this.onMovieTrailerClickListener = onMovieTrailerClickListener;
     }
 
+    @Override
+    public int getItemCount() {
+        return getItems().size();
+    }
+
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -30,9 +30,15 @@ public class MovieReviewsAdapter extends BaseRecyclerViewAdapter<MovieReview> {
         return new MovieReviewVHolder(itemMovieReviewBinding);
     }
 
+    @Override
+    public int getItemCount() {
+        return getItems().size();
+    }
+
     class MovieReviewVHolder extends BaseViewHolder {
 
         //TODO :: Data Binding set adapter w bet3mlo b3d;
+        // TODO :: Pages Request btnesh page 2;
         ItemMovieReviewBinding itemMovieReviewBinding;
 
         public MovieReviewVHolder(ItemMovieReviewBinding itemMovieReviewBinding) {

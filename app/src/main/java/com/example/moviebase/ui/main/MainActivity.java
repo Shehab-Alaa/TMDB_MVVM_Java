@@ -6,62 +6,68 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.moviebase.R;
+import com.example.moviebase.databinding.ActivityMainBinding;
+import com.example.moviebase.ui.base.BaseActivity;
 import com.example.moviebase.ui.main.favorite.FavoriteMoviesFragment;
 import com.example.moviebase.ui.main.movie.MoviesFragment;
+import com.example.moviebase.ui.main.movie_details.MovieDetailsViewModel;
 import com.example.moviebase.utils.AppConstants;
 import com.google.android.material.navigation.NavigationView;
 
+import javax.inject.Inject;
 
-public class MainActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private Toolbar toolbar;
+public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel> implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         initUI();
 
         if (savedInstanceState == null)
         {
             openFragment(AppConstants.NOW_PLAYING);
-            navigationView.setCheckedItem(R.id.nowPlayingMoviesItem);
+            getViewDataBinding().navView.setCheckedItem(R.id.nowPlayingMoviesItem);
         }
     }
 
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public MainViewModel initViewModel() {
+        return new ViewModelProvider(this , viewModelFactory).get(MainViewModel.class);
+    }
+
     public void initUI(){
-        // TODO :: findViewByID;
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this , drawerLayout , toolbar
+        setSupportActionBar(getViewDataBinding().toolbar);
+        getViewDataBinding().navView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this , getViewDataBinding().drawerLayout , getViewDataBinding().toolbar
                 , R.string.navigation_drawer_open , R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
+        getViewDataBinding().drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
     }
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+        if(getViewDataBinding().drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            getViewDataBinding().drawerLayout.closeDrawer(GravityCompat.START);
         }else {
             super.onBackPressed();
         }
-
     }
 
     @Override
@@ -69,28 +75,28 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
         switch (item.getItemId())
         {
             case R.id.nowPlayingMoviesItem:
-                toolbar.setTitle("Now Playing Movies");
+                getViewDataBinding().toolbar.setTitle("Now Playing Movies");
                 openFragment(AppConstants.NOW_PLAYING);
                 break;
             case R.id.popularMoviesItem:
-                toolbar.setTitle("Popular Movies");
+                getViewDataBinding().toolbar.setTitle("Popular Movies");
                 openFragment(AppConstants.POPULAR);
                 break;
             case R.id.topRatedMoviesItem:
-                toolbar.setTitle("Top Rated Movies");
+                getViewDataBinding().toolbar.setTitle("Top Rated Movies");
                 openFragment(AppConstants.TOP_RATED);
                 break;
             case R.id.upcomingMoviesItem:
-                toolbar.setTitle("Upcoming Movies");
+                getViewDataBinding().toolbar.setTitle("Upcoming Movies");
                 openFragment(AppConstants.UPCOMING);
                 break;
             case R.id.favoriteMoviesItem:
-                toolbar.setTitle("Favorite Movies");
+                getViewDataBinding().toolbar.setTitle("Favorite Movies");
                 openFragment(AppConstants.FAVORITE);
                 break;
         }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
+        getViewDataBinding().drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

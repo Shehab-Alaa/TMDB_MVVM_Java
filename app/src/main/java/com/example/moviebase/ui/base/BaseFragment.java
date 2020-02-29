@@ -47,8 +47,12 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewDataBinding.setLifecycleOwner(this);
+        getViewDataBinding().setVariable(getBindingVariable(),getViewModel());
+        getViewDataBinding().setLifecycleOwner(this);
+        getViewDataBinding().executePendingBindings();
     }
+
+    public abstract int getBindingVariable();
 
     public View getRootView() {
         return mRootView;

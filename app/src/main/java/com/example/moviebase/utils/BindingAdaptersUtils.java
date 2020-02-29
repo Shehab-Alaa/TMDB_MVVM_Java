@@ -1,5 +1,6 @@
 package com.example.moviebase.utils;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -8,12 +9,14 @@ import com.example.moviebase.R;
 import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.data.remote.client.YoutubeClient;
 import com.example.moviebase.data.model.Category;
+import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 import com.squareup.picasso.Callback;
 
 import java.util.List;
 
 import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class BindingAdaptersUtils {
 
@@ -125,5 +128,16 @@ public class BindingAdaptersUtils {
             adultMovieText.setText("No");
     }
 
+
+    @SuppressWarnings("unchecked")
+    @BindingAdapter({"adapter"})
+    public static <T> void setRecyclerViewData(RecyclerView recyclerView, List<T> items) {
+        BaseRecyclerViewAdapter<T> adapter = (BaseRecyclerViewAdapter< T >) recyclerView.getAdapter();
+        // TODO :: 2 cases (new list , continue on the list);
+        if (adapter != null) {
+           adapter.addItems(items);
+           Log.i("Here" , "Movies Size" + adapter.getItemCount());
+        }
+    }
 
 }

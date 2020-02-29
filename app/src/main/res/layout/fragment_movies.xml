@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+   <data>
+       <import type="android.view.View" />
+       <variable
+           name="moviesViewModel"
+           type="com.example.moviebase.ui.main.movie.MoviesViewModel" />
+   </data>
 
 
 <RelativeLayout
@@ -11,16 +19,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movies_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:adapter="@{moviesViewModel.moviesList}"
+        tools:listitem="@layout/item_movie">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <ProgressBar
+    <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:backgroundTint="@color/colorAccent"
-        android:visibility="invisible"/>
+        android:visibility="@{moviesViewModel.isLoading ? View.VISIBLE : View.INVISIBLE}"/>
 
 </RelativeLayout>
 

@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationBinding,MovieDetailsViewModel> {
+public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationBinding,MovieDetailsViewModel> implements MoviesAdapter.MoviesAdapterListener{
 
     private Movie movie;
 
@@ -74,7 +74,7 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
         ////
 
         // Similar Movies Section
-        similarMoviesAdapter.setOnMovieItemClickListener(getViewModel());
+        similarMoviesAdapter.setListener(this);
         initRecyclerView(getViewDataBinding().rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
         getViewModel().getMoviesList().observe(this, movies -> similarMoviesAdapter.addItems(movies));
         /////
@@ -111,8 +111,8 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
         LayoutAnimationController bottomAnimationController = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_animation_from_bottom);
         getViewDataBinding().movieOverviewLayout.setLayoutAnimation(bottomAnimationController);
 
-        // Shard Element Movie Poster
-        getViewDataBinding().moviePoster.setTransitionName(movie.getId().toString());
+        /*// Shard Element Movie Poster
+        getViewDataBinding().moviePoster.setTransitionName(movie.getId().toString());*/
     }
 
     private void getMovieDetailsApiCall(int movieID){
@@ -136,5 +136,15 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
         recyclerView.setLayoutManager(new LinearLayoutManager(this , orientation,false));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onRetryClick() {
+
+    }
+
+    @Override
+    public void onItemClick(Movie item) {
+
     }
 }
