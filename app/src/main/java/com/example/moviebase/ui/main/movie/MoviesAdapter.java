@@ -57,7 +57,6 @@ public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         public MoviesViewHolder(@NonNull ItemMovieBinding itemMovieBinding) {
             super(itemMovieBinding.getRoot());
             this.itemMovieBinding = itemMovieBinding;
-            // TODO :: progress Handler ?
             this.itemMovieBinding.setProgressBarHandler(this);
         }
 
@@ -77,9 +76,9 @@ public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
 
         @Override
-        public void onItemClick(Movie item) {
+        public void onItemClick(View view,Movie item) {
             if (item != null){
-                moviesAdapterListener.onItemClick(item);
+                moviesAdapterListener.onItemClick(view,item);
             }
         }
     }

@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="emptyItemViewModel"
-            type="com.example.moviebase.ui.main.movie.MovieEmptyItemViewModel" />
+            name="emptyMovieTrailer"
+            type="com.example.moviebase.ui.main.movie_details.MovieTrailerEmptyItemViewModel" />
     </data>
 
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
-            android:onClick="@{() -> emptyItemViewModel.onRetryClick()}"
+            android:onClick="@{() -> emptyMovieTrailer.onRetryClick()}"
             android:text="@string/retry"
             android:textAllCaps="false"
             android:background="@color/dToolbar"

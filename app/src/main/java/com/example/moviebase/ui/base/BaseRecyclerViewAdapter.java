@@ -29,9 +29,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         }
     }
 
-    // TODO :: Empty Item For Trailer and Review Adapter
-    // TODO :: Apply Data Binding to MovieDetails;
-    // TODO :: make Empty take all the Screen and not to show first thing before progressBar;
 
     @Override
     public int getItemCount() {

@@ -18,8 +18,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movies_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:adapter="@{moviesViewModel.moviesList}"
         tools:listitem="@layout/item_movie">
     </androidx.recyclerview.widget.RecyclerView>

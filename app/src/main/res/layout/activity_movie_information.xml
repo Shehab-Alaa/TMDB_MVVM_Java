@@ -12,11 +12,11 @@
             name="movieDetails"
             type="com.example.moviebase.data.model.MovieDetails" />
         <variable
-            name="eventHandler"
-            type="com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClickListener" />
-        <variable
             name="progressBarHandler"
             type="com.example.moviebase.utils.eventhandlers.ProgressBarHandler" />
+        <variable
+            name="movieDetailsViewModel"
+            type="com.example.moviebase.ui.main.movie_details.MovieDetailsViewModel" />
     </data>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -75,11 +75,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="32dp"
-        android:src="@drawable/ic_un_favorite"
+        android:src="@{movieDetailsViewModel.isFavorite ? @drawable/ic_favorite : @drawable/ic_un_favorite}"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
-        android:onClick="@{(view)->eventHandler.onFavoriteBtnClick(view,movie)}"/>
+        android:onClick="@{(view)->movieDetailsViewModel.onFavoriteBtnClick(view,movie)}"
+        tools:src="@drawable/ic_un_favorite" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested"
@@ -320,7 +321,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
-                android:layout_marginBottom="10dp">
+                adapter="@{movieDetailsViewModel.moviesList}"
+                android:layout_marginBottom="10dp"
+                tools:listitem="@layout/item_movie">
             </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -351,7 +354,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
-                    android:layout_marginBottom="10dp">
+                    adapter="@{movieDetailsViewModel.movieTrailersList}"
+                    android:layout_marginBottom="10dp"
+                    tools:listitem="@layout/item_movie_trailer">
                 </androidx.recyclerview.widget.RecyclerView>
 
             </LinearLayout>
@@ -373,7 +378,9 @@
                 android:id="@+id/rv_movie_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                adapter="@{movieDetailsViewModel.movieReviewsList}"
+                android:layout_marginTop="10dp"
+                tools:listitem="@layout/item_movie_review">
             </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>

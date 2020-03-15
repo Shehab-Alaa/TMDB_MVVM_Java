@@ -23,12 +23,10 @@ public class MoviesViewModel extends MoviesBaseViewModel {
     @Inject
     public MoviesViewModel(DataRepository dataRepository){
         super(dataRepository);
-        Log.i("Here","Create New Movies View Model");
         totalMoviesPages = new MutableLiveData<>();
     }
 
     public void getMoviesListApiCall(String category , int page){
-         Log.i("Here", "Category " + category);
          setIsLoading(true);
          getDataRepository().getApiRepository().getMoviesList(category,page)
                 .subscribeOn(Schedulers.io())

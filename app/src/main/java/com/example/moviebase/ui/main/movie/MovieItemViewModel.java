@@ -1,6 +1,7 @@
 package com.example.moviebase.ui.main.movie;
 
-import android.util.Log;
+
+import android.view.View;
 
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.ui.base.BaseItemListener;
@@ -23,11 +24,11 @@ public class MovieItemViewModel{
           movieTitle = new ObservableField<>(movie.getOriginalTitle());
       }
 
-      public void onItemClick(){
-          movieItemClickListener.onItemClick(movie);
+      public void onItemClick(View view){
+          movieItemClickListener.onItemClick(view,movie);
       }
 
-      public interface MovieItemClickListener extends BaseItemListener< Movie >{
+      public interface MovieItemClickListener extends BaseItemListener<Movie>{
           // to be implemented by the adapter.
       }
 }

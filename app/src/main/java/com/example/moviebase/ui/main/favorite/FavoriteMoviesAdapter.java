@@ -76,9 +76,9 @@ public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
 
         @Override
-        public void onItemClick(Movie item) {
+        public void onItemClick(View view,Movie item) {
             if (item != null){
-                favoritesAdapterListener.onItemClick(item);
+                favoritesAdapterListener.onItemClick(view,item);
             }
         }
     }

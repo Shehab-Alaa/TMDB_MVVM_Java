@@ -1,24 +1,37 @@
 package com.example.moviebase.ui.main.movie_details;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.example.moviebase.R;
+import com.example.moviebase.data.model.MovieTrailer;
+import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.ui.base.BaseActivity;
 import com.example.moviebase.ui.main.movie.MoviesAdapter;
 import com.example.moviebase.databinding.ActivityMovieInformationBinding;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.AppConstants;
+import com.example.moviebase.utils.PicassoCache;
+
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationBinding,MovieDetailsViewModel> implements MoviesAdapter.MoviesAdapterListener{
+public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationBinding,MovieDetailsViewModel>
+        implements MoviesAdapter.MoviesAdapterListener , MovieTrailersAdapter.MovieTrailersAdapterListener{
 
     private Movie movie;
 
@@ -39,12 +52,18 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO :: set Movie Data Binding and view model as a handler (delete handler)
+        // TODO :: all view models must hold all data and view observe them (Handlers , Loaders); in base view model;
+
         movie = (Movie) getIntent().getSerializableExtra(AppConstants.SELECTED_MOVIE);
         getViewDataBinding().setMovie(movie);
 
         getViewModel().checkFavoriteMovies(movie.getId()); // to set UI and observe favorite logic
 
-        getViewDataBinding().setEventHandler(getViewModel());
+        getViewDataBinding().setMovieDetailsViewModel(getViewModel());
+
+        // Shard Element Movie Poster
+        getViewDataBinding().moviePoster.setTransitionName(movie.getId().toString());
 
         getViewDataBinding().collapsingToolbar.setTitleEnabled(true);
         getViewDataBinding().collapsingToolbar.setTitle(movie.getTitle());
@@ -58,16 +77,6 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
         getMovieReviewsApiCall(movie.getId(),1);
         ///
 
-        // Favorite FAB
-        getViewModel().getIsFavorite().observe(this, isFavorite -> {
-            if (isFavorite){
-                getViewDataBinding().fabFavorite.setImageResource(R.drawable.ic_favorite);
-            }
-            else{
-                getViewDataBinding().fabFavorite.setImageResource(R.drawable.ic_un_favorite);
-            }
-        });
-        //
 
         // Movie Details Section
         getViewModel().getMovieDetails().observe(this, movieDetails -> getViewDataBinding().setMovieDetails(movieDetails));
@@ -76,19 +85,15 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
         // Similar Movies Section
         similarMoviesAdapter.setListener(this);
         initRecyclerView(getViewDataBinding().rvSimilarMovies , similarMoviesAdapter , RecyclerView.HORIZONTAL);
-        getViewModel().getMoviesList().observe(this, movies -> similarMoviesAdapter.addItems(movies));
         /////
 
         // Movie Reviews Section
         initRecyclerView(getViewDataBinding().rvMovieReviews , movieReviewsAdapter , RecyclerView.VERTICAL);
-        getViewModel().getMovieReviewsList().observe(this, movieReviews -> movieReviewsAdapter.addItems(movieReviews));
         ////
 
-
         // Movie Trailers Section
-        movieTrailersAdapter.setOnMovieTrailerClickListener(getViewModel());
+        movieTrailersAdapter.setOnMovieTrailerClickListener(this);
         initRecyclerView(getViewDataBinding().rvMovieTrailers,movieTrailersAdapter,RecyclerView.HORIZONTAL);
-        getViewModel().getMovieTrailersList().observe(this, movieTrailers -> movieTrailersAdapter.addItems(movieTrailers));
         ////
     }
 
@@ -140,11 +145,43 @@ public class MovieDetailsActivity extends BaseActivity<ActivityMovieInformationB
 
     @Override
     public void onRetryClick() {
+        getSimilarMoviesApiCall(movie.getId() , 1);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onItemClick(View itemView,Movie movieItem) {
+        Intent intent = new Intent(this , MovieDetailsActivity.class);
+        intent.putExtra(AppConstants.SELECTED_MOVIE, movieItem);
+        // set dynamic transition name by MovieID
+        itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
+        // need to share MoviePoster between this Activity And MovieInformation
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this,
+                        itemView.findViewById(R.id.movie_poster),
+                        Objects.requireNonNull(ViewCompat.getTransitionName(itemView.findViewById(R.id.movie_poster))));
+        startActivity(intent , options.toBundle());
     }
 
     @Override
-    public void onItemClick(Movie item) {
-
+    public void onMovieTrailersRetry() {
+        getMovieTrailersApiCall(movie.getId());
     }
+
+    @Override
+    public void onMovieTrailerClick(MovieTrailer movieTrailer) {
+        openYoutubeApp(movieTrailer.getKey());
+    }
+
+    private void openYoutubeApp(String videoId){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_APP_LINK + videoId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_WEB_LINK + videoId));
+        try {
+            getApplicationContext().startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            getApplicationContext().startActivity(webIntent);
+        }
+    }
+
+
 }

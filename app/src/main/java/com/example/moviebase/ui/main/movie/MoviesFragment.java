@@ -1,7 +1,9 @@
 package com.example.moviebase.ui.main.movie;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,10 +20,15 @@ import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +51,6 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
 
         assert getArguments() != null;
         category = getArguments().getString(AppConstants.SELECTED_CATEGORY); // request API to get all movies in this Category
-        Log.i("Here" , "Create New Fragment " + category );
         moviesAdapter.setListener(this);
     }
 
@@ -109,7 +115,6 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (page <= totalMoviesPages){
-                    Log.i("Here","Page " + page);
                     getMoviesDataApiCall(page);
                 }
             }
@@ -126,20 +131,20 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         getMoviesDataApiCall(1);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(Movie movie) {
+    public void onItemClick(View itemView,Movie movie) {
         Intent intent = new Intent(getContext() , MovieDetailsActivity.class);
         intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
-        startActivity(intent);
-        /*
+        // TODO :: you can set this from adapter item binding;
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
         // need to share MoviePoster between this Activity And MovieInformation
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation((Activity) itemView.getContext(),
+                makeSceneTransitionAnimation(getActivity(),
                         itemView.findViewById(R.id.movie_poster),
                         Objects.requireNonNull(ViewCompat.getTransitionName(itemView.findViewById(R.id.movie_poster))));
-        itemView.getContext().startActivity(intent , options.toBundle());*/
+        startActivity(intent , options.toBundle());
     }
 }
 

@@ -1,13 +1,21 @@
 package com.example.moviebase.ui.main.movie_details;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviebase.R;
+import com.example.moviebase.databinding.ItemEmptyMovieBinding;
+import com.example.moviebase.databinding.ItemEmptyMovieTrailerBinding;
+import com.example.moviebase.databinding.ItemMovieBinding;
 import com.example.moviebase.databinding.ItemMovieTrailerBinding;
 import com.example.moviebase.data.model.MovieTrailer;
+import com.example.moviebase.ui.base.BaseEmptyItemListener;
+import com.example.moviebase.ui.base.BaseItemListener;
 import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
+import com.example.moviebase.ui.main.movie.MoviesAdapter;
+import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.eventhandlers.OnMovieTrailerClickListener;
 
 import java.util.List;
@@ -17,43 +25,78 @@ import androidx.databinding.DataBindingUtil;
 
 public class MovieTrailersAdapter  extends BaseRecyclerViewAdapter<MovieTrailer> {
 
-    private OnMovieTrailerClickListener onMovieTrailerClickListener;
+    private MovieTrailersAdapterListener movieTrailersAdapterListener;
 
     public MovieTrailersAdapter(List< MovieTrailer > items) {
         super(items);
     }
 
-    public void setOnMovieTrailerClickListener(OnMovieTrailerClickListener onMovieTrailerClickListener){
-        this.onMovieTrailerClickListener = onMovieTrailerClickListener;
+    public void setOnMovieTrailerClickListener(MovieTrailersAdapterListener movieTrailersAdapterListener){
+        this.movieTrailersAdapterListener = movieTrailersAdapterListener;
     }
 
     @Override
-    public int getItemCount() {
-        return getItems().size();
+    public int getItemViewType(int position) {
+        return getItems() != null && !getItems().isEmpty() ? AppConstants.VIEW_TYPE_NORMAL : AppConstants.VIEW_TYPE_EMPTY;
     }
 
     @NonNull
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemMovieTrailerBinding itemMovieTrailerBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.getContext()), R.layout.item_movie_trailer,parent ,false
-        );
-        return new MovieTrailersViewHolder(itemMovieTrailerBinding);
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (viewType){
+            case AppConstants.VIEW_TYPE_NORMAL:
+                return new MovieTrailersViewHolder(ItemMovieTrailerBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            case AppConstants.VIEW_TYPE_EMPTY:
+            default: return new EmptyMovieTrailersViewHolder(ItemEmptyMovieTrailerBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        }
     }
 
-    public class MovieTrailersViewHolder extends BaseViewHolder {
+    public interface MovieTrailersAdapterListener{
+        void onMovieTrailersRetry();
+        void onMovieTrailerClick(MovieTrailer movieTrailer);
+    }
 
-        ItemMovieTrailerBinding itemMovieTrailerBinding;
+    public class MovieTrailersViewHolder extends BaseViewHolder implements MovieTrailerItemViewModel.MovieTrailerClickListener  {
+
+        private ItemMovieTrailerBinding itemMovieTrailerBinding;
 
         public MovieTrailersViewHolder(ItemMovieTrailerBinding itemMovieTrailerBinding) {
             super(itemMovieTrailerBinding.getRoot());
             this.itemMovieTrailerBinding = itemMovieTrailerBinding;
-            this.itemMovieTrailerBinding.setEventHandler(onMovieTrailerClickListener);
         }
 
         @Override
         public void onBind(int position) {
-            itemMovieTrailerBinding.setMovieTrailer(getItems().get(position));
+            itemMovieTrailerBinding.setMovieTrailerViewModel(new MovieTrailerItemViewModel(getItems().get(position),this));
+            itemMovieTrailerBinding.executePendingBindings();
+        }
+
+        @Override
+        public void onMovieTrailerClick(MovieTrailer movieTrailer) {
+            movieTrailersAdapterListener.onMovieTrailerClick(movieTrailer);
         }
     }
+
+    public class EmptyMovieTrailersViewHolder extends BaseViewHolder implements MovieTrailerEmptyItemViewModel.MovieTrailerEmptyItemListener{
+
+        private ItemEmptyMovieTrailerBinding itemEmptyMovieTrailerBinding;
+
+        public EmptyMovieTrailersViewHolder(ItemEmptyMovieTrailerBinding itemEmptyMovieTrailerBinding) {
+            super(itemEmptyMovieTrailerBinding.getRoot());
+            this.itemEmptyMovieTrailerBinding = itemEmptyMovieTrailerBinding;
+        }
+
+        @Override
+        public void onBind(int position) {
+            itemEmptyMovieTrailerBinding.setEmptyMovieTrailer(new MovieTrailerEmptyItemViewModel(this));
+            itemEmptyMovieTrailerBinding.executePendingBindings();
+
+        }
+
+        @Override
+        public void onRetryClick() {
+            movieTrailersAdapterListener.onMovieTrailersRetry();
+        }
+    }
+
 }

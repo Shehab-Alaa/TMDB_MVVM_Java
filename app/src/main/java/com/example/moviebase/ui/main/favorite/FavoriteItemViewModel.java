@@ -1,5 +1,7 @@
 package com.example.moviebase.ui.main.favorite;
 
+import android.view.View;
+
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.ui.base.BaseItemListener;
 
@@ -20,8 +22,8 @@ public class FavoriteItemViewModel {
         movieTitle = new ObservableField<>(movie.getOriginalTitle());
     }
 
-    public void onItemClick(){
-        favoriteMovieItemClickListener.onItemClick(movie);
+    public void onItemClick(View view){
+        favoriteMovieItemClickListener.onItemClick(view,movie);
     }
 
     public interface FavoriteMovieItemClickListener extends BaseItemListener< Movie > {

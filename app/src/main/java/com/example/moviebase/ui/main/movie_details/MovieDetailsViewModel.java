@@ -1,8 +1,5 @@
 package com.example.moviebase.ui.main.movie_details;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
@@ -15,21 +12,20 @@ import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.api.MovieReviewResponse;
 import com.example.moviebase.data.model.api.MovieVideosResponse;
 import com.example.moviebase.ui.base.MoviesBaseViewModel;
-import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.eventhandlers.OnFavoriteBtnClickListener;
-import com.example.moviebase.utils.eventhandlers.OnMovieTrailerClickListener;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MovieDetailsViewModel extends MoviesBaseViewModel implements OnFavoriteBtnClickListener , OnMovieTrailerClickListener {
+public class MovieDetailsViewModel extends MoviesBaseViewModel implements OnFavoriteBtnClickListener {
 
     private MutableLiveData<MovieDetails> movieDetails;
     private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
@@ -169,7 +165,7 @@ public class MovieDetailsViewModel extends MoviesBaseViewModel implements OnFavo
 
     @Override
     public void onFavoriteBtnClick(View view, Movie movie) {
-        if (isFavorite.getValue()){
+        if (isFavorite.getValue() != null && isFavorite.getValue()){
             getDataRepository().getDatabaseRepository().removeFavoriteMovie(movie.getId());
             isFavorite.setValue(false);
         }else{
@@ -180,21 +176,6 @@ public class MovieDetailsViewModel extends MoviesBaseViewModel implements OnFavo
 
     public MutableLiveData< Boolean > getIsFavorite() {
         return isFavorite;
-    }
-
-    @Override
-    public void onMovieTrailerClick(View view, MovieTrailer movieTrailer) {
-        openYoutubeApp(view , movieTrailer.getKey());
-    }
-
-    private void openYoutubeApp(View view ,String videoId){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_APP_LINK + videoId));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.YOUTUBE_WEB_LINK + videoId));
-        try {
-            view.getContext().startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            view.getContext().startActivity(webIntent);
-        }
     }
 
 }

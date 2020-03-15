@@ -3,12 +3,9 @@
 <layout>
 
     <data>
-        <variable
-            name="movieTrailer"
-            type="com.example.moviebase.data.model.MovieTrailer" />
-        <variable
-            name="eventHandler"
-            type="com.example.moviebase.utils.eventhandlers.OnMovieTrailerClickListener" />
+       <variable
+           name="movieTrailerViewModel"
+           type="com.example.moviebase.ui.main.movie_details.MovieTrailerItemViewModel" />
     </data>
 
 <androidx.cardview.widget.CardView
@@ -16,14 +13,14 @@
     android:layout_width="175dp"
     android:layout_height="125dp"
     android:layout_margin="5dp"
-    android:onClick="@{(view)->eventHandler.onMovieTrailerClick(view,movieTrailer)}"
+    android:onClick="@{()->movieTrailerViewModel.onItemClick()}"
     android:backgroundTint="@color/dRVBackground">
 
     <ImageView
         android:id="@+id/movie_trailer_thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:trailerImage="@{movieTrailer.key}"/>
+        android:trailerImage="@{movieTrailerViewModel.movieTrailerThumbnails}"/>
 
     <ProgressBar
         android:id="@+id/movie_trailer_loading"

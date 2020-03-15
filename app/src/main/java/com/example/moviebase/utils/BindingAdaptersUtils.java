@@ -133,7 +133,6 @@ public class BindingAdaptersUtils {
     @BindingAdapter({"adapter"})
     public static <T> void setRecyclerViewData(RecyclerView recyclerView, List<T> items) {
         BaseRecyclerViewAdapter<T> adapter = (BaseRecyclerViewAdapter< T >) recyclerView.getAdapter();
-        // TODO :: 2 cases (new list , continue on the list);
         if (adapter != null) {
            adapter.addItems(items);
            Log.i("Here" , "Movies Size" + adapter.getItemCount());
