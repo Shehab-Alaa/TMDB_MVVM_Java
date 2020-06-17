@@ -1,7 +1,5 @@
 package com.example.moviebase.ui.main.favorite;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,24 +7,19 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
-import com.example.moviebase.BR;
 import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.FragmentFavoriteMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
-import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
-import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -97,8 +90,7 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(View itemView,Movie movie) {
-        Intent intent = new Intent(getContext() , MovieDetailsActivity.class);
-        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
+        /*
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
         // need to share MoviePoster between this Activity And MovieInformation
@@ -106,6 +98,15 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
                 makeSceneTransitionAnimation(getActivity(),
                         itemView.findViewById(R.id.movie_poster),
                         Objects.requireNonNull(ViewCompat.getTransitionName(itemView.findViewById(R.id.movie_poster))));
-        startActivity(intent , options.toBundle());
+     */
+        FavoriteMoviesFragmentDirections.ActionFavoriteMoviesFragmentToMovieDetailsFragment action =
+                FavoriteMoviesFragmentDirections.actionFavoriteMoviesFragmentToMovieDetailsFragment(movie);
+        getNavController().navigate(action);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

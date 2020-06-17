@@ -13,29 +13,10 @@
     tools:openDrawer="start"
     android:background="@color/dBackground">
 
-    <LinearLayout
+    <include
+        layout="@layout/app_bar_nav_drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            app:title="Now Playing Movies"
-            app:titleTextColor="@color/dText"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
-
-    </LinearLayout>
-
+        android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -45,8 +26,9 @@
         android:backgroundTint="@color/dNavBackground"
         app:itemIconTint="@color/dText"
         app:itemTextColor="@color/dText"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_movies_menu"></com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/drawer_movies_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
 

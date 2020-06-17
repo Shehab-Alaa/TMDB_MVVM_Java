@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewModel> extends DaggerFragment {
@@ -19,6 +21,7 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
     private Context context;
     private T mViewDataBinding;
     private V mViewModel;
+    private NavController navController;
 
     @Override
     public void onAttach(Context context) {
@@ -47,6 +50,7 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         getViewDataBinding().setVariable(getBindingVariable(),getViewModel());
         getViewDataBinding().setLifecycleOwner(this);
         getViewDataBinding().executePendingBindings();
@@ -66,6 +70,10 @@ public abstract class BaseFragment<T extends ViewDataBinding , V extends ViewMod
 
     public T getViewDataBinding(){
         return mViewDataBinding;
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 
     public V getViewModel(){

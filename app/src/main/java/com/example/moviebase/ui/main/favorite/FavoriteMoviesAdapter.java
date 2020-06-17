@@ -1,6 +1,5 @@
 package com.example.moviebase.ui.main.favorite;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,12 @@ public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
 
     public interface FavoritesAdapterListener extends BaseItemListener<Movie>{
 
+    }
+
+    @Override
+    public void addItems(List< Movie > items) {
+        this.clearItems();
+        super.addItems(items);
     }
 
     public class MoviesViewHolder extends BaseViewHolder implements FavoriteItemViewModel.FavoriteMovieItemClickListener, ProgressBarHandler {

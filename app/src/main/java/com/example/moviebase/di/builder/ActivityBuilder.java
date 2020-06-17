@@ -3,8 +3,7 @@ package com.example.moviebase.di.builder;
 import com.example.moviebase.ui.main.MainActivity;
 import com.example.moviebase.ui.main.favorite.FavoriteMoviesFragmentProvider;
 import com.example.moviebase.ui.main.movie.MoviesFragmentProvider;
-import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
-import com.example.moviebase.ui.main.movie_details.MovieDetailsActivityModule;
+import com.example.moviebase.ui.main.movie_details.MovieDetailsFragmentProvider;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -14,9 +13,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules =
             {FavoriteMoviesFragmentProvider.class
-                    , MoviesFragmentProvider.class})
+                    , MoviesFragmentProvider.class
+                    , MovieDetailsFragmentProvider.class})
     abstract MainActivity contributeMainActivity();
-
-    @ContributesAndroidInjector (modules = MovieDetailsActivityModule.class)
-    abstract MovieDetailsActivity contributeMovieDetailsActivity();
 }

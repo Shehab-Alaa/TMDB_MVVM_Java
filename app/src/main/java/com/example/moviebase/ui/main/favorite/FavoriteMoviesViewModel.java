@@ -1,11 +1,8 @@
 package com.example.moviebase.ui.main.favorite;
 
-import android.util.Log;
-
 import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.ui.base.BaseViewModel;
-
 
 import java.util.List;
 

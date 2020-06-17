@@ -37,8 +37,7 @@ public class MovieReviewsAdapter extends BaseRecyclerViewAdapter<MovieReview> {
 
     class MovieReviewVHolder extends BaseViewHolder {
 
-        //TODO :: Data Binding set adapter w bet3mlo b3d;
-        // TODO :: Pages Request btnesh page 2;
+        // TODO :: Pages Request Skip Page 2;
         ItemMovieReviewBinding itemMovieReviewBinding;
 
         public MovieReviewVHolder(ItemMovieReviewBinding itemMovieReviewBinding) {

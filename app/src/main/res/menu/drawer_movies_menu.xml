@@ -7,35 +7,31 @@
         <item
             android:id="@+id/nowPlayingMoviesItem"
             android:icon="@drawable/ic_now_playing_movies"
-            android:title="Now Playing Movies"></item>
+            android:title="@string/now_playing_movies" />
         <item
             android:id="@+id/popularMoviesItem"
             android:icon="@drawable/ic_popular_movies"
-            android:title="Popular Movies"></item>
+            android:title="@string/popular_movies" />
         <item
             android:id="@+id/topRatedMoviesItem"
             android:icon="@drawable/ic_top_rated_movies"
-            android:title="Top Rated Movies"></item>
+            android:title="@string/top_rated_movies" />
         <item
             android:id="@+id/upcomingMoviesItem"
             android:icon="@drawable/ic_upcoming_movies"
-            android:title="Upcoming Movies"></item>
+            android:title="@string/upcoming_movies" />
         <item
             android:id="@+id/favoriteMoviesItem"
             android:icon="@drawable/ic_favorite_movies"
-            android:title="Favorite Movies"></item>
+            android:title="@string/favorite_movies" />
     </group>
 
-    <item android:title="Other">
+    <item android:title="@string/other">
         <menu>
-            <item
-                android:id="@+id/aboutItem"
-                android:icon="@drawable/ic_about"
-                android:title="About"></item>
             <item
                 android:id="@+id/settingsItem"
                 android:icon="@drawable/ic_settings"
-                android:title="Settings"></item>
+                android:title="@string/settings" />
         </menu>
     </item>
 </menu>

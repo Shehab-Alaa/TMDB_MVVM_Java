@@ -1,14 +1,13 @@
 package com.example.moviebase.utils;
 
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.moviebase.R;
+import com.example.moviebase.data.model.Category;
 import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.data.remote.client.YoutubeClient;
-import com.example.moviebase.data.model.Category;
 import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 import com.squareup.picasso.Callback;
@@ -135,7 +134,6 @@ public class BindingAdaptersUtils {
         BaseRecyclerViewAdapter<T> adapter = (BaseRecyclerViewAdapter< T >) recyclerView.getAdapter();
         if (adapter != null) {
            adapter.addItems(items);
-           Log.i("Here" , "Movies Size" + adapter.getItemCount());
         }
     }
 

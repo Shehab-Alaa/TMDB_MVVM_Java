@@ -1,7 +1,5 @@
 package com.example.moviebase.ui.main.movie;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.FragmentMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
-import com.example.moviebase.ui.main.movie_details.MovieDetailsActivity;
 import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
@@ -27,6 +24,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -49,8 +47,10 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        assert getArguments() != null;
-        category = getArguments().getString(AppConstants.SELECTED_CATEGORY); // request API to get all movies in this Category
+        if (getArguments() != null){
+            MoviesFragmentArgs args = MoviesFragmentArgs.fromBundle(getArguments());
+            category = args.getCategoryType();
+        }
         moviesAdapter.setListener(this);
     }
 
@@ -134,17 +134,18 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onItemClick(View itemView,Movie movie) {
-        Intent intent = new Intent(getContext() , MovieDetailsActivity.class);
-        intent.putExtra(AppConstants.SELECTED_MOVIE, movie);
-        // TODO :: you can set this from adapter item binding;
+
         // set dynamic transition name by MovieID
-        itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());
-        // need to share MoviePoster between this Activity And MovieInformation
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(getActivity(),
-                        itemView.findViewById(R.id.movie_poster),
-                        Objects.requireNonNull(ViewCompat.getTransitionName(itemView.findViewById(R.id.movie_poster))));
-        startActivity(intent , options.toBundle());
+        // TODO:: Shared Element Using Navigation Component For (Movie Poster)
+        MoviesFragmentDirections.ActionMoviesFragmentToMovieDetailsFragment action =
+                MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movie);
+        getNavController().navigate(action);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }
 
