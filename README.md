@@ -13,8 +13,8 @@ Applying Clean Code using OOP , SOLID Priciples , Helper Classes and Navigation 
 3. ui: View classes along with their corresponding Presenters.
 4. utils: Utility classes.
 
-### Navigation Component Graph
+## Navigation Component Graph
 ![Screenshot (330)](https://user-images.githubusercontent.com/39988066/84932103-0e700880-b0d4-11ea-9c9d-2bd48d02778a.png)
 
-#### Guide to app architecture
+## Guide to app architecture
 ![architecture](https://user-images.githubusercontent.com/39988066/74880974-1661ab00-5375-11ea-9386-fb66e57e1018.png)
