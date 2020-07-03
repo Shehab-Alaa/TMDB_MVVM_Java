@@ -1,4 +1,4 @@
-# Moviebase App
+# TMDB_MVVM_Java (Clean_Architecture)
 A movie guide app that helps you to discover different types of movies categories in the TMDB API , 
 movie details , movie trailers , movie reviews and adding movies to you watchlist.
 Implementing MVVM architecture using Dagger2, Retrofit, RxJava2, LiveData, RoomDatabase, DataBinding.
