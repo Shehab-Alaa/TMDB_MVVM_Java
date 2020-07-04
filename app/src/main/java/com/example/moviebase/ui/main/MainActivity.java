@@ -2,7 +2,6 @@ package com.example.moviebase.ui.main;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.moviebase.R;
 import com.example.moviebase.databinding.ActivityMainBinding;
@@ -11,8 +10,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -20,7 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel>// implements NavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends BaseActivity< ActivityMainBinding, MainViewModel >// implements NavigationView.OnNavigationItemSelectedListener
 {
 
     @Inject

@@ -15,7 +15,7 @@ public class MovieEmptyItemViewModel{
         movieEmptyItemListener.onRetryClick();
     }
 
-    public interface MovieEmptyItemListener extends BaseEmptyItemListener{
+    public interface MovieEmptyItemListener extends BaseEmptyItemListener {
 
     }
 

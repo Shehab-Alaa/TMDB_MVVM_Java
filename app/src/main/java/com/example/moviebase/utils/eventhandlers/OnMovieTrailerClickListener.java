@@ -5,5 +5,5 @@ import android.view.View;
 import com.example.moviebase.data.model.MovieTrailer;
 
 public interface OnMovieTrailerClickListener {
-    void onMovieTrailerClick(View view , MovieTrailer movieTrailer);
+    void onMovieTrailerClick(View view, MovieTrailer movieTrailer);
 }

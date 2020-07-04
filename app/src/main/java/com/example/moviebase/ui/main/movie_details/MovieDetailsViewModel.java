@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MovieDetailsViewModel extends MoviesBaseViewModel implements OnFavoriteBtnClickListener {
 
-    private MutableLiveData<MovieDetails> movieDetails;
+    private MutableLiveData< MovieDetails > movieDetails;
     private MutableLiveData<ArrayList<MovieTrailer>> movieTrailersList;
     private MutableLiveData<ArrayList<MovieReview>> movieReviewsList;
     private MutableLiveData<Boolean> isFavorite;

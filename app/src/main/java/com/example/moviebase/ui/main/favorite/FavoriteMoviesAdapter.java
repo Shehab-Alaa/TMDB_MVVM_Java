@@ -17,7 +17,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
+public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter< Movie > {
 
     private FavoritesAdapterListener favoritesAdapterListener;
 
@@ -45,7 +45,7 @@ public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
     }
 
-    public interface FavoritesAdapterListener extends BaseItemListener<Movie>{
+    public interface FavoritesAdapterListener extends BaseItemListener< Movie >{
 
     }
 
@@ -81,7 +81,7 @@ public class FavoriteMoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
 
         @Override
-        public void onItemClick(View view,Movie item) {
+        public void onItemClick(View view, Movie item) {
             if (item != null){
                 favoritesAdapterListener.onItemClick(view,item);
             }

@@ -19,11 +19,11 @@ public class DataResponse implements Serializable {
 
    // private final static long serialVersionUID = 8427508743998362305L;
 
-    public List<Movie> getMovies() {
+    public List< Movie > getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List< Movie > movies) {
         this.movies = movies;
     }
 

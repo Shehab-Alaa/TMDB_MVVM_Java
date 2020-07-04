@@ -29,11 +29,11 @@ public class MovieVideosResponse implements Serializable {
         this.id = id;
     }
 
-    public List<MovieTrailer> getMovieTrailers() {
+    public List< MovieTrailer > getMovieTrailers() {
         return movieTrailers;
     }
 
-    public void setMovieTrailers(List<MovieTrailer> movieTrailers) {
+    public void setMovieTrailers(List< MovieTrailer > movieTrailers) {
         this.movieTrailers = movieTrailers;
     }
 }

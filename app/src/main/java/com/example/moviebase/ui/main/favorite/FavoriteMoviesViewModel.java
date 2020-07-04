@@ -13,7 +13,7 @@ import androidx.lifecycle.LiveData;
 
 public class FavoriteMoviesViewModel extends BaseViewModel {
 
-    private LiveData<List<Movie>> favoriteMoviesList;
+    private LiveData<List< Movie >> favoriteMoviesList;
 
     @Inject
     public FavoriteMoviesViewModel(DataRepository dataRepository){

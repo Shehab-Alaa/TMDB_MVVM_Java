@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.ItemEmptyMovieBinding;
 import com.example.moviebase.databinding.ItemMovieBinding;
 import com.example.moviebase.ui.base.BaseEmptyItemListener;
@@ -11,14 +12,13 @@ import com.example.moviebase.ui.base.BaseItemListener;
 import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
 import com.example.moviebase.utils.AppConstants;
-import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.utils.eventhandlers.ProgressBarHandler;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
+public class MoviesAdapter extends BaseRecyclerViewAdapter< Movie > {
 
     private MoviesAdapterListener moviesAdapterListener;
 
@@ -46,7 +46,7 @@ public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
     }
 
-    public interface MoviesAdapterListener extends BaseItemListener<Movie> , BaseEmptyItemListener{
+    public interface MoviesAdapterListener extends BaseItemListener< Movie >, BaseEmptyItemListener {
 
     }
 
@@ -76,7 +76,7 @@ public class MoviesAdapter extends BaseRecyclerViewAdapter<Movie> {
         }
 
         @Override
-        public void onItemClick(View view,Movie item) {
+        public void onItemClick(View view, Movie item) {
             if (item != null){
                 moviesAdapterListener.onItemClick(view,item);
             }

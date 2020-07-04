@@ -16,7 +16,7 @@ public interface MoviesDAO {
     void insert(Movie movie);
 
     @Query("select * from FavoriteMovies")
-    LiveData<List<Movie>> loadAll();
+    LiveData<List< Movie >> loadAll();
 
     @Query("delete from FavoriteMovies where id = :movieID")
     void delete(long movieID);

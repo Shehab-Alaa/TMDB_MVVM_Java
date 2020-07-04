@@ -35,7 +35,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MovieDetailsFragment extends BaseFragment< FragmentMovieDetailsBinding , MovieDetailsViewModel >
+public class MovieDetailsFragment extends BaseFragment< FragmentMovieDetailsBinding, MovieDetailsViewModel >
         implements MoviesAdapter.MoviesAdapterListener , MovieTrailersAdapter.MovieTrailersAdapterListener{
 
     private Movie movie;
@@ -185,7 +185,7 @@ public class MovieDetailsFragment extends BaseFragment< FragmentMovieDetailsBind
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(View itemView,Movie movieItem) {
+    public void onItemClick(View itemView, Movie movieItem) {
        /*
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());

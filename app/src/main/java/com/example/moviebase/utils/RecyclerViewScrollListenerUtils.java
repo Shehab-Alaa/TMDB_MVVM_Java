@@ -21,7 +21,7 @@ public abstract class RecyclerViewScrollListenerUtils  extends RecyclerView.OnSc
     private boolean loading = true;
 
     // Sets the starting page index
-    private int startingPageIndex = 2;
+    private int startingPageIndex = 1;
 
     RecyclerView.LayoutManager mLayoutManager;
 

@@ -1,29 +1,20 @@
 package com.example.moviebase.ui.main.movie_details;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.moviebase.R;
-import com.example.moviebase.databinding.ItemEmptyMovieBinding;
-import com.example.moviebase.databinding.ItemEmptyMovieTrailerBinding;
-import com.example.moviebase.databinding.ItemMovieBinding;
-import com.example.moviebase.databinding.ItemMovieTrailerBinding;
 import com.example.moviebase.data.model.MovieTrailer;
-import com.example.moviebase.ui.base.BaseEmptyItemListener;
-import com.example.moviebase.ui.base.BaseItemListener;
+import com.example.moviebase.databinding.ItemEmptyMovieTrailerBinding;
+import com.example.moviebase.databinding.ItemMovieTrailerBinding;
 import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
-import com.example.moviebase.ui.main.movie.MoviesAdapter;
 import com.example.moviebase.utils.AppConstants;
-import com.example.moviebase.utils.eventhandlers.OnMovieTrailerClickListener;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 
-public class MovieTrailersAdapter  extends BaseRecyclerViewAdapter<MovieTrailer> {
+public class MovieTrailersAdapter  extends BaseRecyclerViewAdapter< MovieTrailer > {
 
     private MovieTrailersAdapterListener movieTrailersAdapterListener;
 

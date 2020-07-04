@@ -23,7 +23,7 @@ import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesBinding,FavoriteMoviesViewModel>
+public class FavoriteMoviesFragment extends BaseFragment< FragmentFavoriteMoviesBinding, FavoriteMoviesViewModel >
         implements FavoriteMoviesAdapter.FavoritesAdapterListener
 {
 
@@ -89,7 +89,7 @@ public class FavoriteMoviesFragment extends BaseFragment<FragmentFavoriteMoviesB
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(View itemView,Movie movie) {
+    public void onItemClick(View itemView, Movie movie) {
         /*
         // set dynamic transition name by MovieID
         itemView.findViewById(R.id.movie_poster).setTransitionName(movie.getId().toString());

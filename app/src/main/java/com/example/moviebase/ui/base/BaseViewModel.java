@@ -1,7 +1,6 @@
 package com.example.moviebase.ui.base;
 
 import com.example.moviebase.data.DataRepository;
-import com.example.moviebase.utils.eventhandlers.OnMovieItemClickListener;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

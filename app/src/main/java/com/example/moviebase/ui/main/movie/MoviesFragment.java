@@ -4,20 +4,18 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
-import com.example.moviebase.BR;
 import com.example.moviebase.R;
 import com.example.moviebase.data.model.Movie;
 import com.example.moviebase.databinding.FragmentMoviesBinding;
 import com.example.moviebase.ui.base.BaseFragment;
-import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.GridSpacingItemDecorationUtils;
 import com.example.moviebase.utils.RecyclerViewScrollListenerUtils;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -25,13 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesViewModel> implements MoviesAdapter.MoviesAdapterListener{
+public class MoviesFragment extends BaseFragment< FragmentMoviesBinding,MoviesViewModel> implements MoviesAdapter.MoviesAdapterListener{
 
     private String category;
     private GridLayoutManager gridLayoutManager;
@@ -50,6 +46,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         if (getArguments() != null){
             MoviesFragmentArgs args = MoviesFragmentArgs.fromBundle(getArguments());
             category = args.getCategoryType();
+            getViewModel().getMoviesListApiCall(category,1); // get first page
         }
         moviesAdapter.setListener(this);
     }
@@ -59,14 +56,13 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
         super.onViewCreated(view, savedInstanceState);
 
         checkScreenOrientation();
-        getMoviesDataApiCall(1);
         observeTotalMoviesPages();
         setupEndlessRecyclerView();
     }
 
     @Override
     public int getBindingVariable() {
-        return BR.moviesViewModel;
+        return com.example.moviebase.BR.moviesViewModel;
     }
 
     @Override
@@ -133,10 +129,7 @@ public class MoviesFragment extends BaseFragment<FragmentMoviesBinding,MoviesVie
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onItemClick(View itemView,Movie movie) {
-
-        // set dynamic transition name by MovieID
-        // TODO:: Shared Element Using Navigation Component For (Movie Poster)
+    public void onItemClick(View itemView, Movie movie) {
         MoviesFragmentDirections.ActionMoviesFragmentToMovieDetailsFragment action =
                 MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(movie);
         getNavController().navigate(action);

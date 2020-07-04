@@ -1,7 +1,5 @@
 package com.example.moviebase.ui.main.movie_details;
 
-import android.view.View;
-
 import com.example.moviebase.data.model.MovieTrailer;
 
 import androidx.databinding.ObservableField;

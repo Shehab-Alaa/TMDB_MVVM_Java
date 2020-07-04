@@ -2,11 +2,9 @@ package com.example.moviebase.ui.main.movie;
 
 import android.util.Log;
 
-import com.example.moviebase.data.model.api.DataResponse;
-
 import com.example.moviebase.data.DataRepository;
+import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.ui.base.MoviesBaseViewModel;
-import com.example.moviebase.utils.AppConstants;
 
 import javax.inject.Inject;
 

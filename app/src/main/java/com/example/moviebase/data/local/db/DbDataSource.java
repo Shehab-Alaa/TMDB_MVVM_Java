@@ -4,9 +4,7 @@ import com.example.moviebase.data.model.Movie;
 
 import java.util.List;
 
-
 import androidx.lifecycle.LiveData;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public interface DbDataSource {

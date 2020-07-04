@@ -1,7 +1,7 @@
 package com.example.moviebase.data.remote;
 
-import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.MovieDetails;
+import com.example.moviebase.data.model.api.DataResponse;
 import com.example.moviebase.data.model.api.MovieReviewResponse;
 import com.example.moviebase.data.model.api.MovieVideosResponse;
 import com.example.moviebase.data.remote.client.ApiClient;
@@ -32,7 +32,7 @@ public class ApiRepository implements ApiDataSource {
     }
 
     @Override
-    public Single<MovieDetails> getMovieDetailsData(int movieID){
+    public Single< MovieDetails > getMovieDetailsData(int movieID){
         return apiService.getMovieDetails(
                 movieID ,
                 ApiClient.API_KEY ,
@@ -49,7 +49,7 @@ public class ApiRepository implements ApiDataSource {
     }
 
     @Override
-    public Single<MovieReviewResponse> getMovieReviewsListData(int movieID,int page){
+    public Single< MovieReviewResponse > getMovieReviewsListData(int movieID, int page){
         return apiService.getMovieReviews(
                 movieID ,
                 ApiClient.API_KEY ,

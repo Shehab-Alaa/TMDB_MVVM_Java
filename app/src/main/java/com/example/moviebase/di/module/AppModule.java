@@ -4,14 +4,14 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.moviebase.data.DataRepoHelper;
+import com.example.moviebase.data.DataRepository;
+import com.example.moviebase.data.local.db.AppDatabase;
+import com.example.moviebase.data.local.db.DatabaseRepository;
 import com.example.moviebase.data.local.db.DbDataSource;
 import com.example.moviebase.data.remote.ApiDataSource;
 import com.example.moviebase.data.remote.ApiRepository;
 import com.example.moviebase.data.remote.client.ApiClient;
 import com.example.moviebase.data.remote.client.ApiService;
-import com.example.moviebase.data.local.db.AppDatabase;
-import com.example.moviebase.data.local.db.DatabaseRepository;
-import com.example.moviebase.data.DataRepository;
 import com.example.moviebase.di.DatabaseInfo;
 import com.example.moviebase.utils.AppConstants;
 import com.example.moviebase.utils.NetworkUtils;

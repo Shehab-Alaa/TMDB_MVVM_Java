@@ -4,8 +4,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.moviebase.R;
-import com.example.moviebase.databinding.ItemMovieReviewBinding;
 import com.example.moviebase.data.model.MovieReview;
+import com.example.moviebase.databinding.ItemMovieReviewBinding;
 import com.example.moviebase.ui.base.BaseRecyclerViewAdapter;
 import com.example.moviebase.ui.base.BaseViewHolder;
 
@@ -37,7 +37,6 @@ public class MovieReviewsAdapter extends BaseRecyclerViewAdapter<MovieReview> {
 
     class MovieReviewVHolder extends BaseViewHolder {
 
-        // TODO :: Pages Request Skip Page 2;
         ItemMovieReviewBinding itemMovieReviewBinding;
 
         public MovieReviewVHolder(ItemMovieReviewBinding itemMovieReviewBinding) {

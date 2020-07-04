@@ -1,7 +1,6 @@
 package com.example.moviebase.ui.main.movie_details;
 
 import com.example.moviebase.ui.base.BaseEmptyItemListener;
-import com.example.moviebase.ui.main.movie.MovieEmptyItemViewModel;
 
 public class MovieTrailerEmptyItemViewModel {
 
