@@ -4,9 +4,9 @@ movie details , movie trailers , movie reviews and adding movies to you watchlis
 Implementing MVVM architecture using Dagger2, Retrofit, RxJava2, LiveData, RoomDatabase, DataBinding and Navigation Component.
 Applying Clean Code using OOP , SOLID Priciples , Helper Classes and Repository Pattern.
 
-![PicsArt_02-11-10 47 47](https://user-images.githubusercontent.com/39988066/74280438-38c84880-4d25-11ea-8665-bae81164dfce.png)
-![PicsArt_02-11-10 50 14](https://user-images.githubusercontent.com/39988066/74279417-893ea680-4d23-11ea-9dfb-2e9c2e7c7aee.png)
-![PicsArt_02-20-12 05 10](https://user-images.githubusercontent.com/39988066/74881366-dc44d900-5375-11ea-96c3-f236b58036dc.png)
+![106988977_610373243194778_4263052984704696679_n](https://user-images.githubusercontent.com/39988066/86523277-4912c880-be6a-11ea-88aa-a71e23fb435b.png)
+![107376205_269156881038035_8726728892523833839_n](https://user-images.githubusercontent.com/39988066/86523282-5f208900-be6a-11ea-8183-46d508cdd068.png)
+![107103839_274880973946082_1657028415147045183_n](https://user-images.githubusercontent.com/39988066/86523285-69428780-be6a-11ea-81ab-83b33b908c89.png)
 
 ## The app has following packages:
 1. data: It contains all the data accessing and manipulating components.
